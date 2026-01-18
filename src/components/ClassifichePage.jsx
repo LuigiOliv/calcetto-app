@@ -443,42 +443,35 @@ function ClassifichePage({ users = [], votes = [], matches = [], matchVotes = []
                 </div>
             </div>
             <p className="leaderboard-swipe-hint">↔️ Swipe per cambiare tab</p>
-            <div style={{ position: 'relative', overflow: 'hidden', minHeight: '400px' }}>
-                <AnimatePresence initial={false} custom={direction} mode="wait">
-                    <motion.div
-                        key={activeTab}
-                        custom={direction}
-                        variants={variants}
-                        initial="enter"
-                        animate="center"
-                        exit="exit"
-                        transition={{
-                            x: { type: "spring", stiffness: 300, damping: 30 },
-                            opacity: { duration: 0.2 }
-                        }}
-                        drag="x"
-                        dragConstraints={{ left: 0, right: 0 }}
-                        dragElastic={0.2}
-                        onDragEnd={(e, { offset, velocity }) => {
-                            const swipeThreshold = 50; // Soglia in pixel
-                            const swipePower = Math.abs(offset.x) * velocity.x;
-                            
-                            // Swipe verso sinistra (vai avanti)
-                            if (offset.x < -swipeThreshold) {
-                                paginate(1);
-                            } 
-                            // Swipe verso destra (vai indietro)
-                            else if (offset.x > swipeThreshold) {
-                                paginate(-1);
-                            }
-                        }}
-                        style={{ 
-                            position: 'absolute', 
-                            width: '100%',
-                            left: 0,
-                            right: 0
-                        }}
-                    >
+<div style={{ position: 'relative', width: '100%' }}>
+<AnimatePresence initial={false} custom={direction} mode="wait">
+    <motion.div
+        key={activeTab}
+        custom={direction}
+        variants={variants}
+        initial="enter"
+        animate="center"
+        exit="exit"
+        transition={{
+            x: { type: "spring", stiffness: 300, damping: 30 },
+            opacity: { duration: 0.2 }
+        }}
+        drag="x"
+        dragConstraints={{ left: 0, right: 0 }}
+        dragElastic={0.2}
+        onDragEnd={(e, { offset }) => {
+            const swipeThreshold = 100;
+            
+            if (offset.x < -swipeThreshold) {
+                paginate(1);
+            } else if (offset.x > swipeThreshold) {
+                paginate(-1);
+            }
+        }}
+        style={{ 
+            width: '100%'
+        }}
+    >
                         <div className="leaderboard-tabpanels">
 
 
