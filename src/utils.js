@@ -49,6 +49,7 @@ const utils = {
         if (!name) return '??';
         return name.substring(0, PROFILE.INITIALS_LENGTH).toUpperCase();
     },
+
     // ============================================================================
     // FORMULA-BASED CLASSIFICATION SYSTEM
     // ============================================================================
@@ -263,7 +264,107 @@ const utils = {
             return gialliPlayers.some(p => p.playerId === playerId) ||
                 verdiPlayers.some(p => p.playerId === playerId);
         }).length;
+    },
+
+    /**
+ * Calcola quante volte un giocatore è stato MVP (voto più alto della partita)
+ */
+    calculateMVPCount(playerId, matches, allMatchVotes) {
+        let mvpCount = 0;
+
+        matches.forEach(match => {
+            if (match.status !== 'COMPLETED') return;
+
+            const matchVotesForMatch = allMatchVotes.filter(mv => mv.matchId === match.id);
+            if (matchVotesForMatch.length === 0) return;
+
+            // Calcola media voti per ogni giocatore in questa partita
+            const playerAverages = {};
+
+            matchVotesForMatch.forEach(voteDoc => {
+                Object.entries(voteDoc.votes || {}).forEach(([pid, rating]) => {
+                    if (!playerAverages[pid]) {
+                        playerAverages[pid] = { total: 0, count: 0 };
+                    }
+                    playerAverages[pid].total += rating;
+                    playerAverages[pid].count += 1;
+                });
+            });
+
+            // Trova il giocatore con la media più alta
+            let maxAverage = 0;
+            let mvpId = null;
+
+            Object.entries(playerAverages).forEach(([pid, data]) => {
+                const average = data.total / data.count;
+                if (average > maxAverage) {
+                    maxAverage = average;
+                    mvpId = pid;
+                }
+            });
+
+            if (mvpId === playerId) {
+                mvpCount++;
+            }
+        });
+
+        return mvpCount;
+    },
+
+    /**
+     * Calcola quante volte un giocatore è stato capocannoniere
+     */
+    calculateTopScorerCount(playerName, matches) {
+        let topScorerCount = 0;
+
+        matches.forEach(match => {
+            if (match.status === 'COMPLETED' && match.topScorer === playerName) {
+                topScorerCount++;
+            }
+        });
+
+        return topScorerCount;
+    },
+
+    /**
+     * Calcola quanti clean sheet ha fatto un portiere
+     */
+    calculateCleanSheets(playerId, playerName, matches, maxGoals) {
+        let cleanSheetCount = 0;
+
+        matches.forEach(match => {
+            if (match.status !== 'COMPLETED') return;
+
+            // Trova in quale squadra giocava il portiere
+            let playerTeam = null;
+            if (match.teams?.gialli?.some(p => p.playerId === playerId || p.playerName === playerName)) {
+                playerTeam = 'gialli';
+            } else if (match.teams?.verdi?.some(p => p.playerId === playerId || p.playerName === playerName)) {
+                playerTeam = 'verdi';
+            }
+
+            if (!playerTeam) return;
+
+            // Verifica se era portiere in quella partita
+            const teamPlayers = match.teams[playerTeam];
+            const playerInMatch = teamPlayers.find(p => p.playerId === playerId || p.playerName === playerName);
+            if (!playerInMatch?.isGoalkeeper) return;
+
+            // Calcola gol subiti (gol della squadra avversaria)
+            const opposingTeam = playerTeam === 'gialli' ? 'verdi' : 'gialli';
+            const goalsAgainst = match.score?.[opposingTeam] || 0;
+
+            if (goalsAgainst <= maxGoals) {
+                cleanSheetCount++;
+            }
+        });
+
+        return cleanSheetCount;
     }
 };
+
+export const calculateMVPCount = utils.calculateMVPCount;
+export const calculateTopScorerCount = utils.calculateTopScorerCount;
+export const calculateCleanSheets = utils.calculateCleanSheets;
 
 export default utils;

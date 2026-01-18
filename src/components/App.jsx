@@ -1,7 +1,7 @@
 // src/components/App.jsx
 // © 2025 Luigi Oliviero | Calcetto Rating App | Tutti i diritti riservati
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { auth } from '../firebase.js';
 import { onAuthStateChanged, signOut, getRedirectResult } from 'firebase/auth';
 import storage from '../storage.js';
@@ -44,19 +44,23 @@ function App() {
     const [showAntonioSelector, setShowAntonioSelector] = useState(false);
     const [antonioProfiles, setAntonioProfiles] = useState([]);
 
-    // 🔍 DEBUG: Expose to console
-    useEffect(() => {
-        window.debugData = { matches, matchVotes, users, votes };
-        console.log('📊 Debug data updated:', {
-            matches: matches.length,
-            matchVotes: matchVotes.length,
-            users: users.length,
-            votes: votes.length
-        });
-    }, [matches, matchVotes, users, votes]);
+    const playersWithOverall = useMemo(() => {
+        return users
+            .filter(u => !u.id.startsWith('seed'))
+            .map(player => {
+                const averages = utils.calculateAverages(player.id, votes, player);
+                const voteCount = utils.countVotes(player.id, votes);
+                const matchCount = utils.countPlayerMatches(player.id, matches);
 
+                const overall = matches.length > 0
+                    ? utils.calculateFormulaBasedOverall(averages, player.id, matches, matchVotes, CLASSIFICATION_FORMULA)
+                    : utils.calculateOverall(averages);
 
-    // 🔧 DEBUG: Verifica storage mobile
+                return { ...player, overall, voteCount, matchCount, averages };
+            });
+    }, [users, votes, matches, matchVotes]);
+
+    // Gestione autenticazione e caricamento dati iniziali
     useEffect(() => {
         let unsubscribe;
         const initAuth = async () => {
@@ -575,6 +579,7 @@ function App() {
                         setUsers={setUsers}
                         votes={votes}
                         setVotes={setVotes}
+                        playersWithOverall={playersWithOverall}  // ⭐ AGGIUNGI
                     />
                 ) : activeTab === 'debug' && currentUser.isAdmin ? (
                     <DebugPage users={users} votes={votes} />

@@ -137,6 +137,7 @@ export function MatchRegistrationView({ match, currentUser, users, onBack, onUpd
 
     const isRegistered = registrations.some(r => r.playerId === currentUser.id);
     const isClosed = match.status === 'CLOSED';
+    const hasTeams = match.teams && (match.teams.gialli?.length > 0 || match.teams.verdi?.length > 0);
 
     const handleRegister = async () => {
         setActionLoading(true);
@@ -387,14 +388,14 @@ export function MatchRegistrationView({ match, currentUser, users, onBack, onUpd
                             </>
                         )}
 
-                        {!isClosed && (
+                        {isClosed && !hasTeams && (
                             <div className="deadline-msg">
                                 Iscriviti entro le ore 20 del {utils.formatDeadlineDisplay(match.registrationDeadlineDisplay)}<br />
                                 per avere la possibilità di cambiare campo se necessario
                             </div>
                         )}
 
-                        {isClosed && (
+                        {isClosed && !hasTeams && (
                             <div className="deadline-msg closed">
                                 Le iscrizioni sono chiuse.<br />
                                 L'admin sta preparando le squadre!

@@ -140,16 +140,17 @@ function SettingsPage({ user, onUpdateUser, onDeleteAccount }) {
                         ✏️ Modifica Ruoli
                     </button>
                 </div>
-                <div className="settings-group admin-danger-zone">
-                    <h3>⚠️ Zona Pericolosa</h3>
-                    <p>Questa azione cancellerà i tuoi dati personali ma conserverà i voti. Potrai recuperare il profilo rieffettuando il login con la stessa email.</p>
-                    <button
-                        className="btn btn-danger"
-                        onClick={onDeleteAccount}
-                    >
-                        🗑️ Elimina Account
-                    </button>
-                </div>
+            </div>
+
+            <div className="settings-group admin-danger-zone">
+                <h3>⚠️ Zona Pericolosa</h3>
+                <p>Questa azione cancellerà i tuoi dati personali ma conserverà i voti. Potrai recuperare il profilo rieffettuando il login con la stessa email.</p>
+                <button
+                    className="btn btn-danger"
+                    onClick={onDeleteAccount}
+                >
+                    🗑️ Elimina Account
+                </button>
             </div>
 
 
@@ -180,7 +181,7 @@ function SettingsPage({ user, onUpdateUser, onDeleteAccount }) {
 // 2. ADMIN PAGE (Strumenti Amministrativi)
 // =========================================================================
 
-function AdminPage({ users, setUsers, votes, setVotes }) {
+function AdminPage({ users, setUsers, votes, setVotes, playersWithOverall }) {
     const [editingPlayer, setEditingPlayer] = useState(null);
     const [editName, setEditName] = useState('');
     const [showSuccess, setShowSuccess] = useState(false);
@@ -198,7 +199,6 @@ function AdminPage({ users, setUsers, votes, setVotes }) {
     const [adminMatches, setAdminMatches] = useState([]);
     const [adminRegistrations, setAdminRegistrations] = useState({});
     const [activeTab, setActiveTab] = useState('matches'); // Tab di default: Partite
-    const [showPastMatches, setShowPastMatches] = useState(false); // Toggle match passati
 
     // STATI PER ASSEGNAZIONE SQUADRE E RISULTATO
     const [showTeamAssignment, setShowTeamAssignment] = useState(false);
@@ -587,7 +587,7 @@ function AdminPage({ users, setUsers, votes, setVotes }) {
             setTeamGialli(match.teams.gialli);
             setTeamVerdi(match.teams.verdi);
         } else {
-            generateBalancedTeams(regs);
+            generateBalancedTeams(regs);  // ⭐ Nessun parametro
         }
 
         setShowTeamAssignment(true);
@@ -595,15 +595,15 @@ function AdminPage({ users, setUsers, votes, setVotes }) {
 
     const generateBalancedTeams = (registrations) => {
         const playersWithData = registrations.map(reg => {
-            const userData = users.find(u => u.id === reg.playerId);
-            const averages = utils.calculateAverages(reg.playerId, votes, userData);
-            const overall = utils.calculateOverall(averages) || 2.5;
+            // ⭐ Trova l'overall già calcolato
+            const playerData = playersWithOverall.find(p => p.id === reg.playerId);
+            const overall = playerData?.overall || 2.5;
 
             return {
                 ...reg,
                 overall: overall,
-                preferredRole: userData?.preferredRole || null,
-                otherRoles: userData?.otherRoles || []
+                preferredRole: playerData?.preferredRole || null,
+                otherRoles: playerData?.otherRoles || []
             };
         });
 
@@ -667,20 +667,21 @@ function AdminPage({ users, setUsers, votes, setVotes }) {
         if (!team || team.length === 0) return { avgOverall: 0, totalOverall: 0, goalkeepers: 0 };
 
         const totalOverall = team.reduce((sum, p) => {
-            const userData = users.find(u => u.id === p.playerId);
-            const averages = utils.calculateAverages(p.playerId, votes, userData);
-            const overall = utils.calculateOverall(averages) || 2.5;
-            return sum + overall;
+            const playerData = playersWithOverall.find(player => player.id === p.playerId);
+            return sum + (playerData?.overall || 2.5);
         }, 0);
 
         const avgOverall = totalOverall / team.length;
-        const goalkeepers = team.filter(p => p.isGoalkeeper).length;
+        const goalkeepers = team.filter(p => {
+            const playerData = playersWithOverall.find(player => player.id === p.playerId);
+            return playerData?.preferredRole === ROLES.GOALKEEPER;
+        }).length;
 
         return {
-            avgOverall: avgOverall,
-            totalOverall: totalOverall,
-            goalkeepers: goalkeepers,
-            count: team.length
+            avgOverall: avgOverall,  // Numero
+            avgOverallDisplay: avgOverall.toFixed(2),  // Stringa per il display
+            totalOverall: totalOverall.toFixed(2),
+            goalkeepers
         };
     };
 
@@ -1454,8 +1455,10 @@ function AdminPage({ users, setUsers, votes, setVotes }) {
                                         {(() => {
                                             const gialliStats = calculateTeamStats(teamGialli);
                                             const verdiStats = calculateTeamStats(teamVerdi);
-                                            const diff = Math.abs(gialliStats.avgOverall - verdiStats.avgOverall);
-                                            const isBalanced = diff < 0.3;
+                                            const diff = Math.abs(parseFloat(gialliStats.avgOverall) - parseFloat(verdiStats.avgOverall));
+                                            const diffBase10 = utils.toBase10(diff);  // ⭐ Converti in scala 1-10
+                                            console.log('Diff base4:', diff, 'Diff base10:', diffBase10, 'Threshold:', TEAM_BALANCE.BALANCE_THRESHOLD);
+                                            const isBalanced = diffBase10 < TEAM_BALANCE.BALANCE_THRESHOLD;
 
                                             return (
                                                 <>
@@ -1512,9 +1515,8 @@ function AdminPage({ users, setUsers, votes, setVotes }) {
                                     </h3>
                                     <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                                         {teamGialli.map(player => {
-                                            const userData = users.find(u => u.id === player.playerId);
-                                            const averages = utils.calculateAverages(player.playerId, votes, userData);
-                                            const overall = utils.calculateOverall(averages) || 2.5;
+                                            const playerData = playersWithOverall.find(u => u.id === player.playerId);
+                                            const overall = playerData?.overall || 2.5;
 
                                             return (
                                                 <div
@@ -1575,9 +1577,8 @@ function AdminPage({ users, setUsers, votes, setVotes }) {
                                     </h3>
                                     <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                                         {teamVerdi.map(player => {
-                                            const userData = users.find(u => u.id === player.playerId);
-                                            const averages = utils.calculateAverages(player.playerId, votes, userData);
-                                            const overall = utils.calculateOverall(averages) || 2.5;
+                                            const playerData = playersWithOverall.find(p => p.id === player.playerId);
+                                            const overall = playerData?.overall || 2.5;
 
                                             return (
                                                 <div

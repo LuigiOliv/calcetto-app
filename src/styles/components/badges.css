@@ -90,3 +90,183 @@
     font-weight: 500;
     border: 1px solid rgba(210, 248, 0, 0.3);
 }
+
+
+
+
+
+
+/* Container per badge e OVR sulla stessa riga */
+.profile-stats-row {
+    position: relative;
+}
+
+/* Badge a sinistra */
+.award-cards-container {
+    position: absolute;
+    left: 0;
+    top: 30px;
+    transform: translateY(-50%);
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    align-items: center;
+    /* CAMBIA QUESTO VALORE PER SCALARE TUTTO */
+    /* 16px = dimensione normale | 10px = piccolo | 24px = gigante */
+    font-size: 8px;
+}
+
+.award-card:hover {
+    transform: translateY(-2px);
+}
+
+/* Card base scalabile */
+.award-card {
+    position: relative;
+    width: 7.5em;
+    /* Era 160px */
+    height: 9em;
+    /* Era 220px */
+    background: #222;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.25em;
+    /* Proporzionale */
+    overflow: hidden;
+    transition: transform 0.3s ease;
+}
+
+.award-inner {
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.63);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    backdrop-filter: blur(0.3em);
+}
+
+/* Icone e Testi scalabili */
+.icon {
+    font-size: 2em;
+    /* Circa 40px */
+    margin-bottom: 0.4em;
+}
+
+.title {
+    font-weight: 800;
+    font-size: 1.2em;
+    letter-spacing: 0.05em;
+    text-align: center;
+    margin-top: -0.5em;
+}
+
+/* --- DESIGN MVP (Esagono) --- */
+.mvp {
+    clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+    background: var(--gold);
+    box-shadow: 0 0 20px rgba(255, 172, 45, 0.4);
+}
+
+.mvp .award-inner {
+    clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+}
+
+.mvp .title {
+    color: #ffd900;
+    text-shadow: 0 0 10px rgba(255, 220, 27, 0.5);
+}
+
+/* --- DESIGN SCORER (Scudo Aguzzo) --- */
+.scorer {
+    clip-path: polygon(0% 0%, 100% 0%, 100% 75%, 50% 100%, 0% 75%);
+    background: var(--fire);
+}
+
+.scorer .award-inner {
+    clip-path: polygon(0% 0%, 100% 0%, 100% 75%, 50% 100%, 0% 75%);
+}
+
+.scorer .title {
+    color: #ffc371;
+}
+
+/* --- DESIGN CLEAN SHEET (Scudo Arrotondato) --- */
+.clean-sheet {
+    border-radius: 10px 10px 90px 90px;
+    background: var(--ice);
+}
+
+.clean-sheet .award-inner {
+    border-radius: 10px 10px 90px 90px;
+}
+
+.clean-sheet .title {
+    color: #00d2ff;
+}
+
+
+/* Il riflesso vero e proprio */
+.award-card::after {
+    content: "";
+    position: absolute;
+    top: -50%;
+    /* Parte da molto in alto */
+    left: -150%;
+    /* Parte da molto a sinistra */
+    width: 200%;
+    height: 300%;
+    /* Più alto per coprire bene durante la rotazione */
+
+    /* GRADIENTE NETTO E LUMINOSO */
+    /* Usiamo color-stop (es. 45%, 50%, 55%) per creare una striscia di luce definita */
+    background: linear-gradient(45deg,
+            transparent 45%,
+            rgba(255, 255, 255, 0.8) 50%,
+            /* Molto luminoso al centro (0.8 opacità) */
+            transparent 55%);
+
+    transform: rotate(35deg);
+    /* Incliniamo un po' meno per un passaggio più verticale */
+    pointer-events: none;
+    /* Il mouse non deve interagire col riflesso */
+    z-index: 1;
+    /* Sta sopra lo sfondo colorato ma sotto il testo */
+
+    /* Animazione veloce con pausa */
+    animation: glassFlash 2.5s infinite ease-in-out;
+}
+
+/* Keyframes modificati per velocità e pausa */
+@keyframes glassFlash {
+    0% {
+        left: -150%;
+        opacity: 0;
+        /* Inizia invisibile */
+    }
+
+    10% {
+        opacity: 1;
+        /* Diventa visibile appena entra */
+    }
+
+    40% {
+        /* Il movimento finisce qui, molto veloce (nel 40% del tempo totale) */
+        left: 150%;
+        opacity: 1;
+    }
+
+    41% {
+        opacity: 0;
+        /* Sparisce subito dopo aver attraversato */
+    }
+
+    100% {
+        /* Rimane fuori schermo e invisibile per il resto del tempo (pausa) */
+        left: 150%;
+        opacity: 0;
+    }
+}

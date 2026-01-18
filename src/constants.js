@@ -87,7 +87,7 @@ export const CLASSIFICATION_FORMULA = {
 // ============================================
 export const VOTING = {
     MIN_VOTES_FOR_DISPLAY: 5,           // Numero minimo di valutazioni per comparire nelle classifiche
-    MIN_VOTES_RECENT_FOR_LEADERBOARD: 3, // Numero minimo di valutazioni negli ultimi 7 giorni per visualizzare la classifica
+    MIN_VOTES_RECENT_FOR_LEADERBOARD: 3, // Numero minimo di valutazioni negli ultimi giorni per visualizzare la classifica
     RECENT_VOTES_WINDOW_MS: 5 * 24 * 60 * 60 * 1000, // Numero di giorni in millisecondi nei quali contare i voti recenti
     RECENT_VOTES_WINDOW: 5,              // Numero di giorni nei quali contare i voti recenti         
     SEED_VOTES_COUNT: 8,                 // Numero di voti seed quando l'amministratore modifica le valutazioni
@@ -156,7 +156,7 @@ export const DISPLAY = {
 // TEAM BALANCE & ALGORITHM
 // ============================================
 export const TEAM_BALANCE = {
-    BALANCE_THRESHOLD: 0.3,              // Max difference for balanced teams
+    BALANCE_THRESHOLD: 0.1,              // Max difference for balanced teams
     DEFAULT_OVERALL_VALUE: 2.5,          // Default overall when no averages exist
     MAX_TEAM_SIZE_DIFFERENCE: 1,         // Max difference in team sizes
     MIN_GOALKEEPERS_FOR_SPLIT: 2,        // Minimum GKs to split between teams
@@ -180,3 +180,5 @@ export const UI = {
     SWIPE_THRESHOLD_PX: 60,              // Minimum swipe distance for tab change
     MOBILE_BREAKPOINT_PX: 768,           // Larghezza dei dispositivi per abilitare hard click (radar charts)
 };
+
+export const CLEAN_SHEET_MAX_GOALS = 2; // Clean sheet se avversari segnano <= 2 gol

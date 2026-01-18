@@ -2,7 +2,8 @@
 // © 2025 Luigi Oliviero | Calcetto Rating App | Tutti i diritti riservati
 
 import { useState } from 'react';
-import utils from '../utils.js';
+import utils from '../utils';
+import { CLEAN_SHEET_MAX_GOALS } from '../constants';
 import { getSkillsForPlayer, getShortSkillsForPlayer, CLASSIFICATION_FORMULA, VOTING, UI } from '../constants.js';
 import RadarChart from './RadarChart.jsx';
 
@@ -21,6 +22,12 @@ function PlayerProfile({ player, votes = [], matches = [], matchVotes = [], isOw
     const overall = matches.length > 0
         ? utils.calculateFormulaBasedOverall(averages, player.id, matches, matchVotes, CLASSIFICATION_FORMULA)
         : utils.calculateOverall(averages);
+    const playerMatches = utils.getPlayerMatchHistory(player.id, matches);
+    const mvpCount = utils.calculateMVPCount(player.id, playerMatches, matchVotes);
+    const topScorerCount = utils.calculateTopScorerCount(player.name, playerMatches);
+    const cleanSheetCount = player.isGoalkeeper
+        ? utils.calculateCleanSheets(player.id, player.name, playerMatches, CLEAN_SHEET_MAX_GOALS)
+        : 0;
     const [flippedCard, setFlippedCard] = useState(null);
     const handleCardClick = (category) => {
         if (window.innerWidth <= UI.MOBILE_BREAKPOINT_PX) {
@@ -41,12 +48,10 @@ function PlayerProfile({ player, votes = [], matches = [], matchVotes = [], isOw
                 <div className="avatar profile-avatar">
                     {player.avatar ? <img src={player.avatar} alt={player.name} /> : utils.getInitials(player.name)}
                 </div>
-
                 <div className="profile-header-info">
                     <h2>{player.name} {player.isGoalkeeper && '🧤'}</h2>
                     <div className="votes-count">Sulla base di {voteCount} valutazioni ricevute</div>
                 </div>
-
                 {(player.preferredRole || (player.otherRoles && player.otherRoles.length > 0)) && (
                     <div className="role-info">
                         {player.preferredRole && (
@@ -67,13 +72,52 @@ function PlayerProfile({ player, votes = [], matches = [], matchVotes = [], isOw
                 )}
             </div>
 
-            {hasEnoughVotes && overall && (
-                <div className="overall-container">
-                    <div className="overall-main">{utils.toBase10(overall).toFixed(2)}</div>
-                    <div className="overall-label">Overall Rating</div>
-                </div>
-            )}
 
+            {/* Container con Badge a sinistra e OVR al centro */}
+            <div className="profile-stats-row">
+                {/* Badge Statistiche - A SINISTRA */}
+                {(mvpCount > 0 || topScorerCount > 0 || cleanSheetCount > 0) && (
+                    <div className="award-cards-container">
+                        {mvpCount > 0 && (
+                            <div class="award-card mvp">
+                                <div class="award-inner">
+                                    <div class="title">MVP</div>
+                                    <div class="icon">👑</div>
+                                    <div class="title">x{mvpCount}</div>
+                                </div>
+                            </div>
+                        )}
+                        {topScorerCount > 0 && (
+                            <div class="award-card scorer">
+                                <div class="award-inner">
+                                    <div class="title">TOP</div>
+                                    <div class="icon">⚽</div>
+                                    <div class="title">SCORER<br />x{topScorerCount}</div>
+
+                                </div>
+                            </div>
+                        )}
+                        {player.isGoalkeeper && cleanSheetCount > 0 && (
+                            <div class="award-card clean-sheet">
+                                <div class="award-inner">
+                                    <div class="title">CLEAN SHEET</div>
+                                    <div class="icon">🛡️</div>
+                                    <div class="title">x{cleanSheetCount}</div>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                )}
+                {/* Overall Rating - AL CENTRO */}
+                {hasEnoughVotes && overall && (
+                    <div className="overall-container">
+                        <div className="overall-main">{utils.toBase10(overall).toFixed(2)}</div>
+                        <div className="overall-label">Overall Rating</div>
+                    </div>
+                )}
+            </div>
+
+            {/* Grafici Radar delle skill */}
             {hasEnoughVotes && averages ? (
                 <div className="charts-container">
                     {Object.entries(getSkillsForPlayer(player)).map(([category, skills]) => {

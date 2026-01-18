@@ -3,7 +3,7 @@
 
 import { useState, useMemo, useEffect, useRef } from 'react';
 import utils from '../utils.js';
-import { ROLES, SKILLS, shortSKILLS, SKILLS_GOALKEEPER, CLASSIFICATION_FORMULA, MATCH, VOTING, DISPLAY, UI } from '../constants.js';
+import { ROLES, SKILLS, shortSKILLS, SKILLS_GOALKEEPER, CLASSIFICATION_FORMULA, DEADLINES, MATCH, VOTING, DISPLAY, UI } from '../constants.js';
 
 /**
  * Pagina per visualizzare le classifiche (Rating, Skill, Portieri, etc.).
@@ -84,8 +84,6 @@ function ClassifichePage({ users = [], votes = [], matches = [], matchVotes = []
     }, [votes, currentUserId]);
 
     const canViewLeaderboard = !hasVoteTargets || userVotesCount >= VOTING.MIN_VOTES_RECENT_FOR_LEADERBOARD;
-
-    // Calcola statistiche overall con formula
     const playersWithOverall = useMemo(() => {
         return users
             .filter(u => !u.id.startsWith('seed'))
@@ -94,7 +92,6 @@ function ClassifichePage({ users = [], votes = [], matches = [], matchVotes = []
                 const voteCount = utils.countVotes(player.id, votes);
                 const matchCount = utils.countPlayerMatches(player.id, matches);
 
-                // Usa la formula se abbiamo i dati delle partite
                 const overall = matches.length > 0
                     ? utils.calculateFormulaBasedOverall(averages, player.id, matches, matchVotes, CLASSIFICATION_FORMULA)
                     : utils.calculateOverall(averages);
