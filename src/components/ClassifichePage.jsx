@@ -460,10 +460,15 @@ function ClassifichePage({ users = [], votes = [], matches = [], matchVotes = []
                         dragConstraints={{ left: 0, right: 0 }}
                         dragElastic={0.2}
                         onDragEnd={(e, { offset, velocity }) => {
-                            const swipe = offset.x * velocity.x;
-                            if (swipe < -500) {
+                            const swipeThreshold = 50; // Soglia in pixel
+                            const swipePower = Math.abs(offset.x) * velocity.x;
+                            
+                            // Swipe verso sinistra (vai avanti)
+                            if (offset.x < -swipeThreshold) {
                                 paginate(1);
-                            } else if (swipe > 500) {
+                            } 
+                            // Swipe verso destra (vai indietro)
+                            else if (offset.x > swipeThreshold) {
                                 paginate(-1);
                             }
                         }}
