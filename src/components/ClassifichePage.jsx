@@ -2,7 +2,7 @@
 // © 2025 Luigi Oliviero | Calcetto Rating App | Tutti i diritti riservati
 
 import { useState, useMemo, useEffect } from 'react';
-import { useSwipeable } from 'react-swipeable';
+import { motion, AnimatePresence } from 'framer-motion';
 import utils from '../utils.js';
 import { ROLES, SKILLS, shortSKILLS, SKILLS_GOALKEEPER, CLASSIFICATION_FORMULA, DEADLINES, MATCH, VOTING, DISPLAY, UI } from '../constants.js';
 
@@ -31,6 +31,7 @@ function ClassifichePage({ users = [], votes = [], matches = [], matchVotes = []
     const [activeTab, setActiveTab] = useState('overall');
     const [showMoreMatches, setShowMoreMatches] = useState(false);;
     const [showMorePerformance, setShowMorePerformance] = useState(false);
+    const [direction, setDirection] = useState(0);
     const currentUserId = currentUser?.id;
     const voteablePlayersCount = useMemo(() => {
         if (!currentUserId) return 0;
@@ -254,24 +255,29 @@ function ClassifichePage({ users = [], votes = [], matches = [], matchVotes = []
     const tabs = [...tabsRow1, ...tabsRow2]; // Per mantenere compatibilità con swipe
     const tabOrder = tabs.map(tab => tab.id);
 
-    const swipeHandlers = useSwipeable({
-        onSwipedLeft: () => {
-            const currentIndex = tabOrder.indexOf(activeTab);
-            if (currentIndex < tabOrder.length - 1) {
-                setActiveTab(tabOrder[currentIndex + 1]);
-            }
+    const paginate = (newDirection) => {
+        const currentIndex = tabOrder.indexOf(activeTab);
+        const newIndex = currentIndex + newDirection;
+        if (newIndex >= 0 && newIndex < tabOrder.length) {
+            setDirection(newDirection);
+            setActiveTab(tabOrder[newIndex]);
+        }
+    };
+
+    const variants = {
+        enter: (direction) => ({
+            x: direction > 0 ? 300 : -300,
+            opacity: 0
+        }),
+        center: {
+            x: 0,
+            opacity: 1
         },
-        onSwipedRight: () => {
-            const currentIndex = tabOrder.indexOf(activeTab);
-            if (currentIndex > 0) {
-                setActiveTab(tabOrder[currentIndex - 1]);
-            }
-        },
-        trackTouch: true,
-        trackMouse: false,
-        preventScrollOnSwipe: false, // Permette scroll verticale
-        delta: 50 // Soglia per riconoscere swipe
-    });
+        exit: (direction) => ({
+            x: direction < 0 ? 300 : -300,
+            opacity: 0
+        })
+    };
 
     // Se non ha votato abbastanza
     if (!canViewLeaderboard) {
@@ -406,7 +412,12 @@ function ClassifichePage({ users = [], votes = [], matches = [], matchVotes = []
                         <button
                             key={tab.id}
                             className={`leaderboard-tab ${activeTab === tab.id ? 'leaderboard-tab--active' : ''}`}
-                            onClick={() => setActiveTab(tab.id)}
+                            onClick={() => {
+                                const currentIndex = tabOrder.indexOf(activeTab);
+                                const newIndex = tabOrder.indexOf(tab.id);
+                                setDirection(newIndex > currentIndex ? 1 : -1);
+                                setActiveTab(tab.id);
+                            }}
                         >
                             <span>{tab.emoji}</span>
                             <span>{tab.label}</span>
@@ -418,7 +429,12 @@ function ClassifichePage({ users = [], votes = [], matches = [], matchVotes = []
                         <button
                             key={tab.id}
                             className={`leaderboard-tab ${activeTab === tab.id ? 'leaderboard-tab--active' : ''}`}
-                            onClick={() => setActiveTab(tab.id)}
+                            onClick={() => {
+                                const currentIndex = tabOrder.indexOf(activeTab);
+                                const newIndex = tabOrder.indexOf(tab.id);
+                                setDirection(newIndex > currentIndex ? 1 : -1);
+                                setActiveTab(tab.id);
+                            }}
                         >
                             <span>{tab.emoji}</span>
                             <span>{tab.label}</span>
@@ -427,7 +443,40 @@ function ClassifichePage({ users = [], votes = [], matches = [], matchVotes = []
                 </div>
             </div>
             <p className="leaderboard-swipe-hint">↔️ Swipe per cambiare tab</p>
-            <div {...swipeHandlers} className="leaderboard-tabpanels" style={{ touchAction: 'pan-y' }}>
+            <div style={{ position: 'relative', overflow: 'hidden', minHeight: '400px' }}>
+                <AnimatePresence initial={false} custom={direction} mode="wait">
+                    <motion.div
+                        key={activeTab}
+                        custom={direction}
+                        variants={variants}
+                        initial="enter"
+                        animate="center"
+                        exit="exit"
+                        transition={{
+                            x: { type: "spring", stiffness: 300, damping: 30 },
+                            opacity: { duration: 0.2 }
+                        }}
+                        drag="x"
+                        dragConstraints={{ left: 0, right: 0 }}
+                        dragElastic={0.2}
+                        onDragEnd={(e, { offset, velocity }) => {
+                            const swipe = offset.x * velocity.x;
+                            if (swipe < -500) {
+                                paginate(1);
+                            } else if (swipe > 500) {
+                                paginate(-1);
+                            }
+                        }}
+                        style={{ 
+                            position: 'absolute', 
+                            width: '100%',
+                            left: 0,
+                            right: 0
+                        }}
+                    >
+                        <div className="leaderboard-tabpanels">
+
+
                 <section className={`leaderboard-tabpanel ${activeTab === 'overall' ? '' : 'leaderboard-tabpanel--hidden'}`}>
                     <div className="rankings-overall-section">
                         <h3 className="rankings-section-title">🏆 Classifica Generale</h3>
@@ -712,9 +761,13 @@ function ClassifichePage({ users = [], votes = [], matches = [], matchVotes = []
                         )}
                     </div>
                 </section>
+                        </div>
+                        </motion.div>
+                    </AnimatePresence>
+                </div>
+                {/* CHIUSURA DEL NUOVO WRAPPER */}
             </div>
-        </div>
-    );
-}
+        );
+    }
 
 export default ClassifichePage;
