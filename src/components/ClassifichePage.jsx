@@ -1,7 +1,8 @@
 // src/components/ClassifichePage.jsx
 // © 2025 Luigi Oliviero | Calcetto Rating App | Tutti i diritti riservati
 
-import { useState, useMemo, useEffect, useRef } from 'react';
+import { useState, useMemo, useEffect } from 'react';
+import { useSwipeable } from 'react-swipeable';
 import utils from '../utils.js';
 import { ROLES, SKILLS, shortSKILLS, SKILLS_GOALKEEPER, CLASSIFICATION_FORMULA, DEADLINES, MATCH, VOTING, DISPLAY, UI } from '../constants.js';
 
@@ -27,11 +28,8 @@ function ClassifichePage({ users = [], votes = [], matches = [], matchVotes = []
     const [selectedSkill, setSelectedSkill] = useState(null);
     const [showMoreOverall, setShowMoreOverall] = useState(false);
     const [showMoreMacros, setShowMoreMacros] = useState({ tecniche: false, tattiche: false, fisiche: false });
-    // NEW:
     const [activeTab, setActiveTab] = useState('overall');
-    const [showMoreMatches, setShowMoreMatches] = useState(false);
-    const touchStartX = useRef(null);
-    const touchEndX = useRef(null);
+    const [showMoreMatches, setShowMoreMatches] = useState(false);;
     const [showMorePerformance, setShowMorePerformance] = useState(false);
     const currentUserId = currentUser?.id;
     const voteablePlayersCount = useMemo(() => {
@@ -256,35 +254,24 @@ function ClassifichePage({ users = [], votes = [], matches = [], matchVotes = []
     const tabs = [...tabsRow1, ...tabsRow2]; // Per mantenere compatibilità con swipe
     const tabOrder = tabs.map(tab => tab.id);
 
-    const swipeThreshold = UI.SWIPE_THRESHOLD_PX;
-    const goToTabIndex = (index) => {
-        if (index >= 0 && index < tabOrder.length) {
-            setActiveTab(tabOrder[index]);
-        }
-    };
-    const handleSwipeDelta = (deltaX) => {
-        if (deltaX > swipeThreshold) {
-            goToTabIndex(tabOrder.indexOf(activeTab) - 1);
-        } else if (deltaX < -swipeThreshold) {
-            goToTabIndex(tabOrder.indexOf(activeTab) + 1);
-        }
-    };
-    const handleTouchStart = (event) => {
-        touchStartX.current = event.touches[0].clientX;
-        touchEndX.current = null;
-    };
-    const handleTouchMove = (event) => {
-        if (touchStartX.current !== null) {
-            touchEndX.current = event.touches[0].clientX;
-        }
-    };
-    const handleTouchEnd = () => {
-        if (touchStartX.current !== null && touchEndX.current !== null) {
-            handleSwipeDelta(touchEndX.current - touchStartX.current);
-        }
-        touchStartX.current = null;
-        touchEndX.current = null;
-    };
+    const swipeHandlers = useSwipeable({
+        onSwipedLeft: () => {
+            const currentIndex = tabOrder.indexOf(activeTab);
+            if (currentIndex < tabOrder.length - 1) {
+                setActiveTab(tabOrder[currentIndex + 1]);
+            }
+        },
+        onSwipedRight: () => {
+            const currentIndex = tabOrder.indexOf(activeTab);
+            if (currentIndex > 0) {
+                setActiveTab(tabOrder[currentIndex - 1]);
+            }
+        },
+        trackTouch: true,
+        trackMouse: false,
+        preventScrollOnSwipe: false, // Permette scroll verticale
+        delta: 50 // Soglia per riconoscere swipe
+    });
 
     // Se non ha votato abbastanza
     if (!canViewLeaderboard) {
@@ -440,12 +427,7 @@ function ClassifichePage({ users = [], votes = [], matches = [], matchVotes = []
                 </div>
             </div>
             <p className="leaderboard-swipe-hint">↔️ Swipe per cambiare tab</p>
-            <div
-                className="leaderboard-tabpanels"
-                onTouchStart={handleTouchStart}
-                onTouchMove={handleTouchMove}
-                onTouchEnd={handleTouchEnd}
-            >
+            <div {...swipeHandlers} className="leaderboard-tabpanels" style={{ touchAction: 'pan-y' }}>
                 <section className={`leaderboard-tabpanel ${activeTab === 'overall' ? '' : 'leaderboard-tabpanel--hidden'}`}>
                     <div className="rankings-overall-section">
                         <h3 className="rankings-section-title">🏆 Classifica Generale</h3>
