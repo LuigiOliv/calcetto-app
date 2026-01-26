@@ -255,16 +255,26 @@ const utils = {
         return playerId;
     },
 
-    countPlayerMatches: (playerId, matches) => {
-        if (!matches || matches.length === 0) return 0;
-
-        return matches.filter(match => {
+    countPlayerMatches: (playerId, matches, users = []) => {
+        if (!matches || matches.length === 0) {
+            // Se non ci sono partite, restituisci solo le previousMatches
+            const player = users.find(u => u.id === playerId);
+            return player?.previousMatches || 0;
+        }
+    
+        const completedMatches = matches.filter(match => {
             if (match.status !== 'COMPLETED') return false;
             const gialliPlayers = match.teams?.gialli || [];
             const verdiPlayers = match.teams?.verdi || [];
             return gialliPlayers.some(p => p.playerId === playerId) ||
                 verdiPlayers.some(p => p.playerId === playerId);
         }).length;
+    
+        // Aggiungi le previousMatches se esistono
+        const player = users.find(u => u.id === playerId);
+        const previousMatches = player?.previousMatches || 0;
+        
+        return completedMatches + previousMatches;
     },
 
     /**

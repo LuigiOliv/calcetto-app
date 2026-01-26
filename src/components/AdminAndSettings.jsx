@@ -20,7 +20,31 @@ function SettingsPage({ user, onUpdateUser, onDeleteAccount }) {
     const [showRoleEdit, setShowRoleEdit] = useState(false);
     const [editingName, setEditingName] = useState(false);
     const [newName, setNewName] = useState(user.name);
+    const [editingPreviousMatches, setEditingPreviousMatches] = useState(null);
+    const [tempPreviousMatches, setTempPreviousMatches] = useState('');
 
+    const handleEditPreviousMatches = (playerId, currentValue) => {
+        setEditingPreviousMatches(playerId);
+        setTempPreviousMatches(String(currentValue || 0));
+    };
+
+    const handleSavePreviousMatches = async (playerId) => {
+        const value = parseInt(tempPreviousMatches);
+        if (isNaN(value) || value < 0) {
+            alert('Inserisci un numero valido (0 o maggiore)');
+            return;
+        }
+    
+        try {
+            const userRef = doc(db, 'users', playerId);
+            await updateDoc(userRef, { previousMatches: value });
+            setEditingPreviousMatches(null);
+            setTempPreviousMatches('');
+        } catch (error) {
+            console.error('Errore aggiornamento previousMatches:', error);
+            alert('Errore durante il salvataggio');
+        }
+    };
     const handleFileChange = (e) => {
         const file = e.target.files[0];
         if (file) {
@@ -896,7 +920,9 @@ function AdminPage({ users, setUsers, votes, setVotes, playersWithOverall }) {
             isAdmin: false,
             isInitialPlayer: false,
             hasVotedOffline: false,
-            isGoalkeeper: false
+            isGoalkeeper: false,
+            createdAt: Date.now(),
+            previousMatches: 0
         };
 
         await storage.updateUser(newPlayer);
@@ -1239,6 +1265,46 @@ function AdminPage({ users, setUsers, votes, setVotes, playersWithOverall }) {
                                                     <span style={{ fontWeight: '600', minWidth: '140px' }}>{player.name}</span>
                                                     <span style={{ color: '#718096', fontSize: '13px', flex: 1 }}>{player.claimed ? `✓ ${player.email}` : '○ Non reclamato'}</span>
                                                     <span style={{ color: '#667eea', fontSize: '13px' }}>OVR: {overall ? utils.toBase10(overall).toFixed(2) : '-'} ({voteCount} voti)</span>
+                                                    {editingPreviousMatches === player.id ? (
+            <div style={{ display: 'flex', gap: '6px', alignItems: 'center' }}>
+                <span style={{ fontSize: '13px', color: '#a0aec0' }}>PGPA:</span>
+                <input
+                    type="number"
+                    min="0"
+                    value={tempPreviousMatches}
+                    onChange={(e) => setTempPreviousMatches(e.target.value)}
+                    style={{
+                        width: '50px',
+                        padding: '4px 6px',
+                        background: 'var(--bg-deep)',
+                        border: '1px solid var(--volt)',
+                        borderRadius: '4px',
+                        color: 'white',
+                        fontSize: '13px'
+                    }}
+                    autoFocus
+                />
+                <button onClick={() => handleSavePreviousMatches(player.id)} className="admin-btn btn-save">✓</button>
+                <button onClick={() => {
+                    setEditingPreviousMatches(null);
+                    setTempPreviousMatches('');
+                }} className="admin-btn btn-cancel">✕</button>
+            </div>
+        ) : (
+            <span 
+                style={{ 
+                    color: '#d2f800', 
+                    fontSize: '13px', 
+                    cursor: 'pointer',
+                    textDecoration: 'underline dotted',
+                    minWidth: '70px'
+                }}
+                onClick={() => handleEditPreviousMatches(player.id, player.previousMatches)}
+                title="Click per modificare presenze precedenti"
+            >
+                PGPA: {player.previousMatches || 0}
+            </span>
+        )}
                                                     <div style={{ display: 'flex', gap: '6px' }}>
                                                         <button onClick={() => handleEditName(player)} className="admin-btn">✏️</button>
                                                         <button onClick={() => handleEditVotes(player)} className="admin-btn btn-chart">📊</button>

@@ -42,7 +42,7 @@ function ClassifichePage({ users = [], votes = [], matches = [], matchVotes = []
             if (u.id.startsWith('seed')) return false;
 
             // Check minimum matches requirement
-            const matchCount = utils.countPlayerMatches(u.id, matches);
+            const matchCount = utils.countPlayerMatches(u.id, matches, users);
             if (matchCount < MATCH.MIN_MATCHES_FOR_VOTING) return false;
 
             // Filter out initial players if user has voted offline
@@ -90,7 +90,7 @@ function ClassifichePage({ users = [], votes = [], matches = [], matchVotes = []
             .map(player => {
                 const averages = utils.calculateAverages(player.id, votes, player);
                 const voteCount = utils.countVotes(player.id, votes);
-                const matchCount = utils.countPlayerMatches(player.id, matches);
+                const matchCount = utils.countPlayerMatches(player.id, matches, users);
 
                 const overall = matches.length > 0
                     ? utils.calculateFormulaBasedOverall(averages, player.id, matches, matchVotes, CLASSIFICATION_FORMULA)
@@ -107,7 +107,7 @@ function ClassifichePage({ users = [], votes = [], matches = [], matchVotes = []
         return users
             .filter(u => !u.id.startsWith('seed'))
             .map(player => {
-                const matchCount = utils.countPlayerMatches(player.id, matches);
+                const matchCount = utils.countPlayerMatches(player.id, matches, users);
                 const voteCount = utils.countVotes(player.id, votes);
                 const averages = utils.calculateAverages(player.id, votes, player);
                 const overall = matches.length > 0
@@ -247,7 +247,7 @@ function ClassifichePage({ users = [], votes = [], matches = [], matchVotes = []
     const tabsRow1 = [
         { id: 'overall', label: 'Generale', emoji: '🏆' },
         { id: 'performance', label: 'Rendimento ultime 10', emoji: '📊' },
-        { id: 'matches', label: 'Presenze totali', emoji: '⚽' }
+        { id: 'matches', label: 'Presenze totali 2025/26', emoji: '⚽' }
     ];
     const tabsRow2 = [
         { id: 'macro', label: 'Vista per Macrocategorie', emoji: '📈' },
@@ -667,7 +667,7 @@ function ClassifichePage({ users = [], votes = [], matches = [], matchVotes = []
                     <div className="rankings-overall-section">
                         <h3 className="rankings-section-title">⚽ Classifica Presenze</h3>
                         <p style={{ fontSize: '14px', opacity: 0.8, marginBottom: '20px', textAlign: 'center' }}>
-                            Classifica basata sul numero di partite giocate
+                            Classifica basata sul numero di partite giocate dall'inizio della stagione 2025/26
                         </p>
 
                         {playersWithMatches.length === 0 ? (
