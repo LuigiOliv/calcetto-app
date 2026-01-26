@@ -20,31 +20,7 @@ function SettingsPage({ user, onUpdateUser, onDeleteAccount }) {
     const [showRoleEdit, setShowRoleEdit] = useState(false);
     const [editingName, setEditingName] = useState(false);
     const [newName, setNewName] = useState(user.name);
-    const [editingPreviousMatches, setEditingPreviousMatches] = useState(null);
-    const [tempPreviousMatches, setTempPreviousMatches] = useState('');
 
-    const handleEditPreviousMatches = (playerId, currentValue) => {
-        setEditingPreviousMatches(playerId);
-        setTempPreviousMatches(String(currentValue || 0));
-    };
-
-    const handleSavePreviousMatches = async (playerId) => {
-        const value = parseInt(tempPreviousMatches);
-        if (isNaN(value) || value < 0) {
-            alert('Inserisci un numero valido (0 o maggiore)');
-            return;
-        }
-    
-        try {
-            const userRef = doc(db, 'users', playerId);
-            await updateDoc(userRef, { previousMatches: value });
-            setEditingPreviousMatches(null);
-            setTempPreviousMatches('');
-        } catch (error) {
-            console.error('Errore aggiornamento previousMatches:', error);
-            alert('Errore durante il salvataggio');
-        }
-    };
     const handleFileChange = (e) => {
         const file = e.target.files[0];
         if (file) {
@@ -213,6 +189,8 @@ function AdminPage({ users, setUsers, votes, setVotes, playersWithOverall }) {
     const [editingVotes, setEditingVotes] = useState(null);
     const [voteValues, setVoteValues] = useState({});
     const [showPlayersList, setShowPlayersList] = useState(false);
+    const [editingPreviousMatches, setEditingPreviousMatches] = useState(null);
+    const [tempPreviousMatches, setTempPreviousMatches] = useState('');
 
     // === STATI PER GESTIONE PARTITE ===
     const [showCreateMatch, setShowCreateMatch] = useState(false);
@@ -928,6 +906,29 @@ function AdminPage({ users, setUsers, votes, setVotes, playersWithOverall }) {
         await storage.updateUser(newPlayer);
         setUsers([...users, newPlayer]);
         showSuccessMsg('Giocatore aggiunto!');
+    };
+
+    const handleEditPreviousMatches = (playerId, currentValue) => {
+        setEditingPreviousMatches(playerId);
+        setTempPreviousMatches(String(currentValue || 0));
+    };
+
+    const handleSavePreviousMatches = async (playerId) => {
+        const value = parseInt(tempPreviousMatches);
+        if (isNaN(value) || value < 0) {
+            alert('Inserisci un numero valido (0 o maggiore)');
+            return;
+        }
+    
+        try {
+            const userRef = doc(db, 'users', playerId);
+            await updateDoc(userRef, { previousMatches: value });
+            setEditingPreviousMatches(null);
+            setTempPreviousMatches('');
+        } catch (error) {
+            console.error('Errore aggiornamento previousMatches:', error);
+            alert('Errore durante il salvataggio');
+        }
     };
 
     const handleFullReset = () => {
