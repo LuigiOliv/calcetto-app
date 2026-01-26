@@ -59,7 +59,7 @@ const utils = {
      */
     getPlayerMatchHistory: (playerId, matches) => {
         if (!matches || matches.length === 0) return [];
-    
+
         return matches
             .filter(match => {
                 if (match.status !== 'COMPLETED') return false;
@@ -67,8 +67,8 @@ const utils = {
                 const verdiPlayers = match.teams?.verdi || [];
                 // OLD: return gialliPlayers.includes(playerId) || verdiPlayers.includes(playerId);
                 // NEW: Check if player object exists in team arrays
-                return gialliPlayers.some(p => p.id === playerId) ||
-                    verdiPlayers.some(p => p.id === playerId);
+                return gialliPlayers.some(p => p.playerId === playerId) ||
+                    verdiPlayers.some(p => p.playerId === playerId);
             })
             .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
     },
@@ -81,7 +81,7 @@ const utils = {
      * @param {number} windowSize - Dimensione finestra (default 10)
      * @param {number} minMatchesInWindow - Minimo partite giocate nella finestra (default 3)
      */
-
+    
     calculatePerformance: (playerId, allMatches, matchVotes, windowSize = 10, minMatchesInWindow = 3) => {
         // Get the last N matches overall (most recent first)
         const recentMatches = allMatches
@@ -93,8 +93,8 @@ const utils = {
         const playerMatches = recentMatches.filter(match => {
             const gialliPlayers = match.teams?.gialli || [];
             const verdiPlayers = match.teams?.verdi || [];
-            return gialliPlayers.some(p => p.id === playerId) ||
-                verdiPlayers.some(p => p.id === playerId);
+            return gialliPlayers.some(p => p.playerId === playerId) ||
+                verdiPlayers.some(p => p.playerId === playerId);
         });
 
         // If player hasn't played any matches in the window, return null
@@ -255,17 +255,17 @@ const utils = {
         return playerId;
     },
 
-countPlayerMatches: (playerId, matches) => {
-    if (!matches || matches.length === 0) return 0;
+    countPlayerMatches: (playerId, matches) => {
+        if (!matches || matches.length === 0) return 0;
 
-    return matches.filter(match => {
-        if (match.status !== 'COMPLETED') return false;
-        const gialliPlayers = match.teams?.gialli || [];
-        const verdiPlayers = match.teams?.verdi || [];
-        return gialliPlayers.some(p => p.id === playerId) ||
-            verdiPlayers.some(p => p.id === playerId);
-    }).length;
-},
+        return matches.filter(match => {
+            if (match.status !== 'COMPLETED') return false;
+            const gialliPlayers = match.teams?.gialli || [];
+            const verdiPlayers = match.teams?.verdi || [];
+            return gialliPlayers.some(p => p.playerId === playerId) ||
+                verdiPlayers.some(p => p.playerId === playerId);
+        }).length;
+    },
 
     /**
  * Calcola quante volte un giocatore è stato MVP (voto più alto della partita)
