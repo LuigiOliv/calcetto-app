@@ -82,7 +82,8 @@ function ClassifichePage({ users = [], votes = [], matches = [], matchVotes = []
         }).length;
     }, [votes, currentUserId]);
 
-    const canViewLeaderboard = !hasVoteTargets || userVotesCount >= VOTING.MIN_VOTES_RECENT_FOR_LEADERBOARD;
+    const canViewLeaderboard = currentUser?.isAdmin || !hasVoteTargets || userVotesCount >= VOTING.MIN_VOTES_RECENT_FOR_LEADERBOARD;
+    
     const playersWithOverall = useMemo(() => {
         return users
             .filter(u => !u.id.startsWith('seed'))
