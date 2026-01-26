@@ -923,6 +923,13 @@ function AdminPage({ users, setUsers, votes, setVotes, playersWithOverall }) {
         try {
             const userRef = doc(db, 'users', playerId);
             await updateDoc(userRef, { previousMatches: value });
+
+            // ✅ AGGIUNGI QUESTE RIGHE: aggiorna l'array locale
+            const updatedUsers = users.map(u => 
+                u.id === playerId ? { ...u, previousMatches: value } : u
+            );
+            setUsers(updatedUsers);
+
             setEditingPreviousMatches(null);
             setTempPreviousMatches('');
         } catch (error) {
