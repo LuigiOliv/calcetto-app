@@ -72,8 +72,8 @@ export const getShortSkillsForPlayer = (player) => {
 // =========================================================================
 
 export const CLASSIFICATION_FORMULA = {
-    CURRENT_WEIGHT: 0.80,              // Peso voto attuale (80%)
-    PERFORMANCE_WEIGHT: 0.40,         // Peso rendimento recente (40%)
+    CURRENT_WEIGHT: 0.90,              // Peso voto attuale (80%)
+    PERFORMANCE_WEIGHT: 0.30,         // Peso rendimento recente (40%)
     CONSISTENCY_WEIGHT: 0.05,         // Peso costanza (5%)
     RECENT_MATCHES_FOR_PERFORMANCE: 10, // Finestra partite per calcolare rendimento
     CONSISTENCY_WINDOW: 5,            // Numero partite per calcolare costanza
