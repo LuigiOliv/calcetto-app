@@ -25,8 +25,10 @@ function PlayersListPage({ users = [], currentUser, votes = [], matches = [], on
                 // Filter out initial players if user has voted offline
                 if (currentUser.hasVotedOffline && u.isInitialPlayer) return false;
 
-                // NEW: Check if current user has played at least one match with this player
-                if (!utils.havePlayedTogether(currentUser.id, u.id, matches)) return false;
+                // Check if current user has played at least one match with this player
+                const hasPlayed = utils.havePlayedTogether(currentUserId, u.id, matches);
+                console.log(`🔍 ${currentUser.name} ha giocato con ${u.name}?`, hasPlayed); // DEBUG
+                if (!hasPlayed) return false;
 
                 // Check if already voted (questo deve essere l'ULTIMO filtro)
                 const alreadyVoted = votes.some(v =>
