@@ -140,8 +140,7 @@ function ClassifichePage({ users = [], votes = [], matches = [], matchVotes = []
                     return { ...player, score: null, voteCount };
                 }
 
-                const skillsForCategory = player.is
-                oalkeeper
+                const skillsForCategory = player.isGoalkeeper
                     ? SKILLS_GOALKEEPER[macroCategory]
                     : SKILLS[macroCategory];
 
