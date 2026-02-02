@@ -29,7 +29,23 @@ function PlayersListPage({ users = [], currentUser, votes = [], matches = [], on
                 const alreadyVoted = votes.some(v =>
                     v.voterId === currentUser.id && v.playerId === u.id
                 );
-                return !alreadyVoted;
+                if (alreadyVoted) return false;
+
+                // NEW: Check if current user has played at least one match with this player
+                const hasPlayedTogether = matches.some(match => {
+                    const gialliPlayers = match.teams?.gialli || [];
+                    const verdiPlayers = match.teams?.verdi || [];
+                    
+                    const currentUserInMatch = gialliPlayers.some(p => p.playerId === currentUser.id) ||
+                                              verdiPlayers.some(p => p.playerId === currentUser.id);
+                    const targetPlayerInMatch = gialliPlayers.some(p => p.playerId === u.id) ||
+                                               verdiPlayers.some(p => p.playerId === u.id);
+                    
+                    // They played together if both were in the same match
+                    return currentUserInMatch && targetPlayerInMatch;
+                });
+
+                return hasPlayedTogether;
             })
             .sort((a, b) => a.name.localeCompare(b.name));
     }, [users, currentUser, votes, matches]);
