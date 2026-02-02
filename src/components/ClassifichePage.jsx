@@ -34,39 +34,10 @@ function ClassifichePage({ users = [], votes = [], matches = [], matchVotes = []
     const [direction, setDirection] = useState(0);
     const currentUserId = currentUser?.id;
 
-const voteablePlayersCount = useMemo(() => {
-    if (!currentUserId) return 0;
+    const voteablePlayersCount = useMemo(() => {
+        return utils.getVoteablePlayers(currentUser, users, matches, votes).length;
+    }, [currentUser, users, matches, votes]);
 
-    const result = users.filter(u => {
-        // Exclude self and seed users
-        if (u.id === currentUserId) return false;
-        if (u.id.startsWith('seed')) return false;
-
-        // Check minimum matches requirement
-        const matchCount = utils.countPlayerMatches(u.id, matches, users);
-        if (matchCount < MATCH.MIN_MATCHES_FOR_VOTING) return false;
-
-        // Filter out initial players if user has voted offline
-        if (currentUser?.hasVotedOffline && u.isInitialPlayer) return false;
-
-        // Check if current user has played at least one match with this player
-        const hasPlayed = utils.havePlayedTogether(currentUserId, u.id, matches);
-        console.log(`🔍 ${currentUser.name} ha giocato con ${u.name}?`, hasPlayed); // DEBUG
-        if (!hasPlayed) return false;
-
-        // Check if already voted (questo deve essere l'ULTIMO filtro)
-        const alreadyVoted = votes.some(v =>
-            v.voterId === currentUserId && v.playerId === u.id
-        );
-        console.log(`✅ ${currentUser.name} ha già votato ${u.name}?`, alreadyVoted); // DEBUG
-        if (alreadyVoted) return false;
-
-        return true;
-    });
-    
-    console.log(`📊 voteablePlayersCount:`, result.length, `hasVoteTargets:`, result.length > 0); // DEBUG
-    return result.length;
-}, [users, currentUserId, currentUser, votes, matches]);
     const hasVoteTargets = voteablePlayersCount > 0;
 
     // Scroll to top quando cambia la vista

@@ -11,31 +11,7 @@ function PlayersListPage({ users = [], currentUser, votes = [], matches = [], on
 
     // Find this useMemo and modify the filter
     const playersToVote = useMemo(() => {
-        if (!currentUser) return [];
-
-        return users
-            .filter(u => {
-                if (u.id === currentUser.id) return false;
-                if (u.id.startsWith('seed')) return false;
-
-                // NEW: Check minimum matches requirement
-                const matchCount = utils.countPlayerMatches(u.id, matches);
-                if (matchCount < MATCH.MIN_MATCHES_FOR_VOTING) return false;
-
-                // Filter out initial players if user has voted offline
-                if (currentUser.hasVotedOffline && u.isInitialPlayer) return false;
-
-                // NEW: Check if current user has played at least one match with this player
-                if (!utils.havePlayedTogether(currentUser.id, u.id, matches)) return false;
-
-                // Check if already voted (questo deve essere l'ULTIMO filtro)
-                const alreadyVoted = votes.some(v =>
-                    v.voterId === currentUser.id && v.playerId === u.id
-                );
-                if (alreadyVoted) return false;
-
-                return true;
-            })
+        return utils.getVoteablePlayers(currentUser, users, matches, votes)
             .sort((a, b) => a.name.localeCompare(b.name));
     }, [users, currentUser, votes, matches]);
 

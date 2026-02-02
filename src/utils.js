@@ -197,6 +197,32 @@ const utils = {
         });
     },
 
+    /**
+     * Get players that current user can vote for
+     */
+    getVoteablePlayers: (currentUser, users, matches, votes) => {
+        if (!currentUser) return [];
+    
+        return users.filter(u => {
+            if (u.id === currentUser.id) return false;
+            if (u.id.startsWith('seed')) return false;
+    
+            const matchCount = utils.countPlayerMatches(u.id, matches);
+            if (matchCount < MATCH.MIN_MATCHES_FOR_VOTING) return false;
+    
+            if (currentUser.hasVotedOffline && u.isInitialPlayer) return false;
+    
+            if (!utils.havePlayedTogether(currentUser.id, u.id, matches)) return false;
+    
+            const alreadyVoted = votes.some(v =>
+                v.voterId === currentUser.id && v.playerId === u.id
+            );
+            if (alreadyVoted) return false;
+    
+            return true;
+        });
+    },
+
     // ============================================================================
     // GENERAZIONE ID GIOCATORI
     // ============================================================================
