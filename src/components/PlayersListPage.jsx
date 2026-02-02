@@ -26,19 +26,7 @@ function PlayersListPage({ users = [], currentUser, votes = [], matches = [], on
                 if (currentUser.hasVotedOffline && u.isInitialPlayer) return false;
 
                 // NEW: Check if current user has played at least one match with this player
-                const hasPlayedTogether = matches.some(match => {
-                    const gialliPlayers = match.teams?.gialli || [];
-                    const verdiPlayers = match.teams?.verdi || [];
-                    
-                    const currentUserInMatch = gialliPlayers.some(p => p.playerId === currentUser.id) ||
-                                              verdiPlayers.some(p => p.playerId === currentUser.id);
-                    const targetPlayerInMatch = gialliPlayers.some(p => p.playerId === u.id) ||
-                                               verdiPlayers.some(p => p.playerId === u.id);
-                    
-                    // They played together if both were in the same match
-                    return currentUserInMatch && targetPlayerInMatch;
-                });
-                if (!hasPlayedTogether) return false;
+                if (!utils.havePlayedTogether(currentUser.id, u.id, matches)) return false;
 
                 // Check if already voted (questo deve essere l'ULTIMO filtro)
                 const alreadyVoted = votes.some(v =>

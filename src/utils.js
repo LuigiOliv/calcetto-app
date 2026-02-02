@@ -148,6 +148,14 @@ const utils = {
         );
         const consistency = utils.calculateConsistency(matchHistory, CLASSIFICATION_FORMULA.CONSISTENCY_WINDOW);
 
+
+
+
+
+
+
+
+    
         // Converti currentVote in scala 1-10
         const currentVote10 = utils.toBase10(currentVote);
 
@@ -166,6 +174,27 @@ const utils = {
 
         // Riconverti in scala 1-4 per compatibilità
         return (finalVote / 10) * 4;
+    },
+
+    /**
+     * Check if two players have played together in at least one match
+     * @param {string} playerId1 - First player ID
+     * @param {string} playerId2 - Second player ID
+     * @param {Array} matches - Array of matches
+     * @returns {boolean} - True if they played together
+     */
+    havePlayedTogether: (playerId1, playerId2, matches) => {
+        return matches.some(match => {
+            const gialliPlayers = match.teams?.gialli || [];
+            const verdiPlayers = match.teams?.verdi || [];
+            
+            const player1InMatch = gialliPlayers.some(p => p.playerId === playerId1) ||
+                                  verdiPlayers.some(p => p.playerId === playerId1);
+            const player2InMatch = gialliPlayers.some(p => p.playerId === playerId2) ||
+                                   verdiPlayers.some(p => p.playerId === playerId2);
+            
+            return player1InMatch && player2InMatch;
+        });
     },
 
     // ============================================================================
@@ -373,9 +402,5 @@ const utils = {
         return cleanSheetCount;
     }
 };
-
-export const calculateMVPCount = utils.calculateMVPCount;
-export const calculateTopScorerCount = utils.calculateTopScorerCount;
-export const calculateCleanSheets = utils.calculateCleanSheets;
 
 export default utils;

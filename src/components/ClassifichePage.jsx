@@ -48,11 +48,16 @@ function ClassifichePage({ users = [], votes = [], matches = [], matchVotes = []
             // Filter out initial players if user has voted offline
             if (currentUser?.hasVotedOffline && u.isInitialPlayer) return false;
 
-            // Check if already voted
+            // Check if current user has played at least one match with this player
+            if (!utils.havePlayedTogether(currentUserId, u.id, matches)) return false;
+
+            // Check if already voted (questo deve essere l'ULTIMO filtro)
             const alreadyVoted = votes.some(v =>
                 v.voterId === currentUserId && v.playerId === u.id
             );
-            return !alreadyVoted;
+            if (alreadyVoted) return false;
+
+            return true;
         }).length;
     }, [users, currentUserId, currentUser, votes, matches]);
     const hasVoteTargets = voteablePlayersCount > 0;
@@ -133,7 +138,8 @@ function ClassifichePage({ users = [], votes = [], matches = [], matchVotes = []
                     return { ...player, score: null, voteCount };
                 }
 
-                const skillsForCategory = player.isGoalkeeper
+                const skillsForCategory = player.is
+                oalkeeper
                     ? SKILLS_GOALKEEPER[macroCategory]
                     : SKILLS[macroCategory];
 
