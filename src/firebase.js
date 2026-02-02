@@ -4,7 +4,7 @@ import { getFirestore } from 'firebase/firestore';
 import { getAuth, setPersistence, browserLocalPersistence } from 'firebase/auth';
 
 const firebaseConfig = {
-  apiKey: "AIzaSyC_81ukybf3QOFFvJcgDWMgbor4Z7k1bgI",
+  apiKey: "AIzaSyAfZZLillNbBn5bjtb4aYBb4hbrhWbncEU",
   authDomain: "calcetto-af1e0.firebaseapp.com",
   projectId: "calcetto-af1e0",
   storageBucket: "calcetto-af1e0.firebasestorage.app",
