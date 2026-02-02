@@ -49,7 +49,9 @@ function ClassifichePage({ users = [], votes = [], matches = [], matchVotes = []
             if (currentUser?.hasVotedOffline && u.isInitialPlayer) return false;
 
             // Check if current user has played at least one match with this player
-            if (!utils.havePlayedTogether(currentUserId, u.id, matches)) return false;
+            const hasPlayed = utils.havePlayedTogether(currentUser.id, u.id, matches);
+            console.log(`🔍 ${currentUser.name} ha giocato con ${u.name}?`, hasPlayed); // DEBUG
+            if (!hasPlayed) return false;
 
             // Check if already voted (questo deve essere l'ULTIMO filtro)
             const alreadyVoted = votes.some(v =>
