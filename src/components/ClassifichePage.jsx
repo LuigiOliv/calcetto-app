@@ -1,5 +1,5 @@
 // src/components/ClassifichePage.jsx
-// © 2025 Luigi Oliviero | Calcetto Rating App | Tutti i diritti riservati
+// © 2026 Luigi Oliviero | Calcetto Rating App | Tutti i diritti riservati
 
 import { useState, useMemo, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';

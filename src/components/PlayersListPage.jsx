@@ -1,5 +1,5 @@
 // src/components/PlayersListPage.jsx
-// © 2025 Luigi Oliviero | Calcetto Rating App | Tutti i diritti riservati
+// © 2026 Luigi Oliviero | Sportivity App | Tutti i diritti riservati
 
 // NEW:
 import { useMemo } from 'react';

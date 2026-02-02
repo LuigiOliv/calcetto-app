@@ -1,5 +1,5 @@
 // src/utils.js
-// © 2025 Luigi Oliviero | Calcetto Rating App | Tutti i diritti riservati
+// © 2026 Luigi Oliviero | Sportivity App | Tutti i diritti riservati
 
 import { SKILLS, SKILLS_GOALKEEPER, getSkillsForPlayer, CLASSIFICATION_FORMULA, MATCH, PROFILE } from './constants.js';
 
