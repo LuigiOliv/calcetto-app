@@ -25,12 +25,6 @@ function PlayersListPage({ users = [], currentUser, votes = [], matches = [], on
                 // Filter out initial players if user has voted offline
                 if (currentUser.hasVotedOffline && u.isInitialPlayer) return false;
 
-                // Check if already voted
-                const alreadyVoted = votes.some(v =>
-                    v.voterId === currentUser.id && v.playerId === u.id
-                );
-                if (alreadyVoted) return false;
-
                 // NEW: Check if current user has played at least one match with this player
                 const hasPlayedTogether = matches.some(match => {
                     const gialliPlayers = match.teams?.gialli || [];
@@ -44,8 +38,15 @@ function PlayersListPage({ users = [], currentUser, votes = [], matches = [], on
                     // They played together if both were in the same match
                     return currentUserInMatch && targetPlayerInMatch;
                 });
+                if (!hasPlayedTogether) return false;
 
-                return hasPlayedTogether;
+                // Check if already voted (questo deve essere l'ULTIMO filtro)
+                const alreadyVoted = votes.some(v =>
+                    v.voterId === currentUser.id && v.playerId === u.id
+                );
+                if (alreadyVoted) return false;
+
+                return true;
             })
             .sort((a, b) => a.name.localeCompare(b.name));
     }, [users, currentUser, votes, matches]);
