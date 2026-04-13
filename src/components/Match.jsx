@@ -203,7 +203,9 @@ export function MatchRegistrationView({ match, currentUser, users, onBack, onUpd
 
     const getAvailablePlayers = () => {
         const registeredIds = registrations.map(r => r.playerId);
-        return users.filter(u => !registeredIds.includes(u.id));
+        return users
+            .filter(u => !registeredIds.includes(u.id))
+            .sort((a, b) => (b.matchCount ?? 0) - (a.matchCount ?? 0));
     };
 
     const countGoalkeepers = () => {

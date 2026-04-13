@@ -1,10 +1,11 @@
 // src/components/MatchDetailRouter.jsx
 // © 2025 Luigi Oliviero | Calcetto Rating App | Tutti i diritti riservati
 
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import storage from '../storage.js';
 import { MatchRegistrationView } from './Match.jsx';
 import { MatchVotingView, MatchResultsView } from './Match/MatchDetails.jsx';
+import utils from '../utils.js';
 
 // ============================================================================
 // ROUTER DETTAGLIO PARTITA
@@ -22,8 +23,15 @@ function MatchDetailRouter({ matchId, currentUser, onBack }) {
 
     const loadUsers = async () => {
         try {
-            const allUsers = await storage.getUsers();
-            setUsers(allUsers);
+            const [allUsers, allMatches] = await Promise.all([
+                storage.getUsers(),
+                storage.getMatches()
+            ]);
+            const usersWithCount = allUsers.map(u => ({
+                ...u,
+                matchCount: utils.countPlayerMatches(u.id, allMatches, allUsers)
+            }));
+            setUsers(usersWithCount);
         } catch (error) {
             console.error('Errore caricamento utenti:', error);
         }
