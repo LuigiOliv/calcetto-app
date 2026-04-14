@@ -150,9 +150,10 @@
 }
 
 /* Icone e Testi scalabili */
-.icon {
-    font-size: 2em;
-    /* Circa 40px */
+.award-icon {
+    width: 2em;
+    height: 2em;
+    object-fit: contain;
     margin-bottom: 0.4em;
 }
 
