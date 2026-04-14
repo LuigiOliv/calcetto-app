@@ -6,6 +6,9 @@ import utils from '../utils';
 import { CLEAN_SHEET_MAX_GOALS } from '../constants';
 import { getSkillsForPlayer, getShortSkillsForPlayer, CLASSIFICATION_FORMULA, VOTING, UI } from '../constants.js';
 import RadarChart from './RadarChart.jsx';
+import mvpIcon from '../assets/awards/mvp.png';
+import topScorerIcon from '../assets/awards/top-scorer.png';
+import cleanSheetIcon from '../assets/awards/clean-sheet.png';
 
 /**
  * Componente per la visualizzazione del profilo di un giocatore (proprio o altrui).
@@ -79,30 +82,29 @@ function PlayerProfile({ player, votes = [], matches = [], matchVotes = [], isOw
                 {(mvpCount > 0 || topScorerCount > 0 || cleanSheetCount > 0) && (
                     <div className="award-cards-container">
                         {mvpCount > 0 && (
-                            <div class="award-card mvp">
-                                <div class="award-inner">
-                                    <div class="title">MVP</div>
-                                    <div class="icon">👑</div>
-                                    <div class="title">x{mvpCount}</div>
+                            <div className="award-card mvp">
+                                <div className="award-inner">
+                                    <div className="title">MVP</div>
+                                    <img src={mvpIcon} alt="MVP" className="award-icon" />
+                                    <div className="title">x{mvpCount}</div>
                                 </div>
                             </div>
                         )}
                         {topScorerCount > 0 && (
-                            <div class="award-card scorer">
-                                <div class="award-inner">
-                                    <div class="title">TOP</div>
-                                    <div class="icon">⚽</div>
-                                    <div class="title">SCORER<br />x{topScorerCount}</div>
-
+                            <div className="award-card scorer">
+                                <div className="award-inner">
+                                    <div className="title">TOP</div>
+                                    <img src={topScorerIcon} alt="Top Scorer" className="award-icon" />
+                                    <div className="title">SCORER<br />x{topScorerCount}</div>
                                 </div>
                             </div>
                         )}
                         {player.isGoalkeeper && cleanSheetCount > 0 && (
-                            <div class="award-card clean-sheet">
-                                <div class="award-inner">
-                                    <div class="title">CLEAN SHEET</div>
-                                    <div class="icon">🛡️</div>
-                                    <div class="title">x{cleanSheetCount}</div>
+                            <div className="award-card clean-sheet">
+                                <div className="award-inner">
+                                    <div className="title">CLEAN SHEET</div>
+                                    <img src={cleanSheetIcon} alt="Clean Sheet" className="award-icon" />
+                                    <div className="title">x{cleanSheetCount}</div>
                                 </div>
                             </div>
                         )}
