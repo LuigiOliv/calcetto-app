@@ -84,7 +84,6 @@ function PlayerProfile({ player, votes = [], matches = [], matchVotes = [], isOw
                         {mvpCount > 0 && (
                             <div className="award-card mvp">
                                 <div className="award-inner">
-                                    <div className="title">MVP</div>
                                     <img src={mvpIcon} alt="MVP" className="award-icon" />
                                     <div className="title">x{mvpCount}</div>
                                 </div>
@@ -93,16 +92,14 @@ function PlayerProfile({ player, votes = [], matches = [], matchVotes = [], isOw
                         {topScorerCount > 0 && (
                             <div className="award-card scorer">
                                 <div className="award-inner">
-                                    <div className="title">TOP</div>
                                     <img src={topScorerIcon} alt="Top Scorer" className="award-icon" />
-                                    <div className="title">SCORER<br />x{topScorerCount}</div>
+                                    <div className="title">x{topScorerCount}</div>
                                 </div>
                             </div>
                         )}
                         {player.isGoalkeeper && cleanSheetCount > 0 && (
                             <div className="award-card clean-sheet">
                                 <div className="award-inner">
-                                    <div className="title">CLEAN SHEET</div>
                                     <img src={cleanSheetIcon} alt="Clean Sheet" className="award-icon" />
                                     <div className="title">x{cleanSheetCount}</div>
                                 </div>
