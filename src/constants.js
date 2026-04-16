@@ -72,12 +72,11 @@ export const getShortSkillsForPlayer = (player) => {
 // =========================================================================
 
 export const CLASSIFICATION_FORMULA = {
-    CURRENT_WEIGHT: 0.90,              // Peso voto attuale (80%)
-    PERFORMANCE_WEIGHT: 0.30,         // Peso rendimento recente (40%)
-    CONSISTENCY_WEIGHT: 0.05,         // Peso costanza (5%)
-    RECENT_MATCHES_FOR_PERFORMANCE: 10, // Finestra partite per calcolare rendimento
-    CONSISTENCY_WINDOW: 5,            // Numero partite per calcolare costanza
-    MIN_MATCHES_FOR_PERFORMANCE: 3     // Minimo partite nella finestra per essere eleggibili
+    RECENT_MATCHES_FOR_PERFORMANCE: 10, // Finestra partite per calcolare presenze e rendimento
+    CONSISTENCY_WINDOW: 5,              // Ultime N partite giocate per calcolare la media rendimento
+    PRESENCE_FACTOR: 0.005,              // Contributo fisso per ogni partita giocata nelle ultime 10
+    PERFORMANCE_FACTOR: 0.015,           // Contributo rendimento per ogni partita giocata
+    MIN_MATCHES_FOR_PERFORMANCE: 3,     // Minimo partite nella finestra per apparire in classifica Rendimento
 };
 
 // Add these new constant groups to your existing constants.js file:
@@ -181,4 +180,4 @@ export const UI = {
     MOBILE_BREAKPOINT_PX: 768,           // Larghezza dei dispositivi per abilitare hard click (radar charts)
 };
 
-export const CLEAN_SHEET_MAX_GOALS = 2; // Clean sheet se avversari segnano <= 2 gol
+export const CLEAN_SHEET_MAX_GOALS = 1; // Clean sheet se avversari segnano <= 1 gol

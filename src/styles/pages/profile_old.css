@@ -1,0 +1,214 @@
+/* ============================================================================
+   PROFILE - MOBILE FIRST
+   ============================================================================ */
+
+.profile-container {
+    /* Mobile: full width */
+    width: 100%;
+    margin: 0 auto;
+}
+
+.profile-header {
+    display: flex;
+    gap: 20px;
+    padding: 15px 0 0 0;
+    margin-bottom: 0;
+    /* Mobile: layout verticale centrato */
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.profile-header .avatar {
+    flex-shrink: 0;
+    border: 3px solid var(--volt);
+    /* Dimensioni gestite dalla sezione AVATAR sopra */
+}
+
+.profile-header-info {
+    /* Mobile: full width */
+    width: 100%;
+}
+
+.profile-header h2 {
+    margin: 0 0 10px 0;
+    color: white;
+    text-transform: uppercase;
+    font-family: 'Teko', sans-serif;
+    text-shadow: none;
+    line-height: 1;
+
+    /* Mobile: dimensione ridotta ma leggibile */
+    font-size: 2rem;
+    letter-spacing: 1.5px;
+}
+
+
+
+
+
+.role-badges {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+
+    /* Mobile: allineamento centrato */
+    align-items: center;
+}
+
+.role-badge {
+    color: white;
+    font-weight: 500;
+    text-transform: uppercase;
+    font-family: 'Teko', sans-serif;
+    letter-spacing: 1px;
+    padding: 6px 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 2px;
+    border-left: 2px solid rgba(210, 248, 0, 0.5);
+
+    /* Mobile: dimensione chiara */
+    font-size: 1rem;
+}
+
+/* Tablet: layout orizzontale ma compatto */
+@media (min-width: 768px) {
+    .profile-container {
+        max-width: 900px;
+    }
+
+    .profile-header {
+        flex-direction: row;
+        align-items: flex-start;
+        text-align: left;
+        gap: 30px;
+        padding: 18px 0 0 0;
+    }
+
+    .profile-header-info {
+        flex: 1;
+    }
+
+    .profile-header h2 {
+        font-size: 2.8rem;
+        letter-spacing: 1.8px;
+        margin: 0 0 12px 0;
+        text-align: left;
+    }
+
+    .votes-count {
+        font-size: 0.95rem;
+        text-align: left;
+    }
+
+    .role-info {
+        align-items: flex-end;
+        text-align: right;
+        margin-top: 0;
+        min-width: 220px;
+    }
+
+    .role-label {
+        font-size: 0.72rem;
+        margin-bottom: 7px;
+    }
+
+    .role-value {
+        font-size: 1.3rem;
+        padding: 8px 15px;
+    }
+
+    .role-badges {
+        align-items: flex-end;
+    }
+
+    .role-badge {
+        font-size: 1.05rem;
+        padding: 6px 13px;
+    }
+}
+
+/* Desktop: layout originale generoso */
+@media (min-width: 1024px) {
+    .profile-container {
+        max-width: 1000px;
+    }
+
+    .profile-header {
+        gap: 40px;
+        padding: 20px 0 0 0;
+        flex: 1;
+        /* Prende tutto lo spazio disponibile */
+        min-height: 180px;
+        /* avatar 140px + spazio */
+    }
+
+    .profile-header h2 {
+        font-size: 3.5rem;
+        letter-spacing: 2px;
+        margin: 0 0 15px 0;
+    }
+
+    .votes-count {
+        font-size: 1rem;
+        letter-spacing: 1.0px;
+        flex: 1;
+        /* ðŸ†• Prende tutto lo spazio disponibile */
+    }
+
+
+
+    .role-label {
+        font-size: 0.75rem;
+        letter-spacing: 1.5px;
+        margin-bottom: 8px;
+    }
+
+    .role-value {
+        font-size: 1.2rem;
+        padding: 5px 12px;
+    }
+
+    .role-badge {
+        font-size: 1.0rem;
+        padding: 4px 12px;
+    }
+}
+
+
+
+
+/* Tablet */
+@media (min-width: 768px) {
+    .overall-container {
+        margin: 25px 0 35px 0;
+    }
+
+    .overall-main {
+        font-size: 5rem;
+    }
+
+    .overall-label {
+        font-size: 0.8rem;
+        letter-spacing: 2.8px;
+        margin-top: 9px;
+    }
+}
+
+/* Desktop: dimensione originale monumentale */
+@media (min-width: 1024px) {
+    .overall-container {
+        margin: 0 0 40px 0;
+    }
+
+    .overall-main {
+        font-size: 6rem;
+    }
+
+    .overall-label {
+        font-size: 0.85rem;
+        letter-spacing: 3px;
+        margin-top: 10px;
+    }
+}

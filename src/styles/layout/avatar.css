@@ -58,9 +58,9 @@
         height: 80px;
     }
 
-    .profile-header .avatar {
-        width: 140px;
-        height: 140px;
+    .player-info .avatar {
+        width: 180px;
+        height: 180px;
         font-size: 3.5rem;
     }
 }

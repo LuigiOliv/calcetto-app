@@ -44,15 +44,47 @@
     font-style: italic;
 }
 
-.role-badges {
+/* DIV DEI RUOLI! */
+
+
+.role-info {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 20px;
     width: 100%;
-
+    margin-top: 10px;
     /* Mobile: allineamento centrato */
     align-items: center;
+    text-align: center;
 }
+
+.role-item {}
+
+.role-label {
+    display: block;
+    color: #8892a6;
+    text-transform: uppercase;
+    font-weight: 400;
+    /* Mobile: dimensione ottimizzata */
+    font-size: 0.7rem;
+    letter-spacing: 1.3px;
+    margin-bottom: 6px;
+}
+
+.role-value {
+    color: white;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-family: 'Teko', sans-serif;
+    letter-spacing: 1px;
+    padding: 8px 14px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 2px;
+    border-left: 3px solid var(--volt);
+    /* Mobile: dimensione leggibile */
+    font-size: 1.2rem;
+}
+
 
 .role-badge {
     color: white;
@@ -63,10 +95,18 @@
     padding: 6px 12px;
     background: rgba(255, 255, 255, 0.05);
     border-radius: 2px;
-    border-left: 2px solid rgba(210, 248, 0, 0.5);
-
+    border-left: 2px solid var(--volt);
     /* Mobile: dimensione chiara */
     font-size: 1rem;
+}
+
+.role-badges {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+    /* Mobile: allineamento centrato */
+    align-items: center;
 }
 
 /* Tablet: layout orizzontale ma compatto */
@@ -161,5 +201,13 @@
 
     .title {
         font-size: 0.85rem;
+    }
+
+    .badges {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 8px;
+        align-items: center;
     }
 }

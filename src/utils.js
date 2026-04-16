@@ -79,7 +79,7 @@ const utils = {
      * @param {number} windowSize - Dimensione finestra (default 10)
      * @param {number} minMatchesInWindow - Minimo partite giocate nella finestra (default 3)
      */
-    
+
     calculatePerformance: (playerId, allMatches, matchVotes, windowSize = 10, minMatchesInWindow = 3) => {
         // Get the last N matches overall (most recent first)
         const recentMatches = allMatches
@@ -135,43 +135,44 @@ const utils = {
     calculateFormulaBasedOverall: (averages, playerId, matches, matchVotes, formula) => {
         const currentVote = utils.calculateOverall(averages);
         if (!currentVote) return null;
+        const base10 = utils.toBase10(currentVote);
 
-        const matchHistory = utils.getPlayerMatchHistory(playerId, matches);
-        const performance = utils.calculatePerformance(
-            playerId,
-            matches,  // ✅ CORRECT - all matches, not just player's
-            matchVotes,
-            CLASSIFICATION_FORMULA.RECENT_MATCHES_FOR_PERFORMANCE,
-            CLASSIFICATION_FORMULA.MIN_MATCHES_FOR_PERFORMANCE
-        );
-        const consistency = utils.calculateConsistency(matchHistory, CLASSIFICATION_FORMULA.CONSISTENCY_WINDOW);
+        // Ultime N partite completate (finestra presenze)
+        const recentMatches = matches
+            .filter(m => m.status === 'COMPLETED')
+            .sort((a, b) => new Date(b.date) - new Date(a.date))
+            .slice(0, formula.RECENT_MATCHES_FOR_PERFORMANCE);
 
+        // Partite giocate dal giocatore in quella finestra
+        const playerRecentMatches = recentMatches.filter(match => {
+            const gialli = match.teams?.gialli || [];
+            const verdi = match.teams?.verdi || [];
+            return gialli.some(p => p.playerId === playerId) ||
+                verdi.some(p => p.playerId === playerId);
+        });
+        const n = playerRecentMatches.length;
 
+        // Media matchVotes nelle ultime CONSISTENCY_WINDOW partite giocate
+        const recentRatings = [];
+        playerRecentMatches
+            .slice(0, formula.CONSISTENCY_WINDOW)
+            .forEach(match => {
+                const matchVotesList = matchVotes.filter(mv => mv.matchId === match.id);
+                matchVotesList.forEach(voterData => {
+                    if (voterData.votes && voterData.votes[playerId] !== undefined) {
+                        recentRatings.push(voterData.votes[playerId]);
+                    }
+                });
+            });
 
+        const rendimento = recentRatings.length > 0
+            ? recentRatings.reduce((a, b) => a + b, 0) / recentRatings.length
+            : base10; // fallback neutro: usa la base stessa
 
+        const multiplier = 1 + (n - 2) * (formula.PRESENCE_FACTOR + formula.PERFORMANCE_FACTOR * (rendimento / 10));
+        const finalVote10 = base10 * multiplier;
 
-
-
-
-    
-        // Converti currentVote in scala 1-10
-        const currentVote10 = utils.toBase10(currentVote);
-
-        // Performance contribution (già in scala 1-10, o 0 se null)
-        const performanceContribution = performance !== null
-            ? performance * formula.PERFORMANCE_WEIGHT
-            : 0;
-
-        // Consistency in scala 1-10
-        const consistencyContribution = (consistency * 10) * formula.CONSISTENCY_WEIGHT;
-
-        // Calcola voto finale in scala 1-10
-        const finalVote = (currentVote10 * formula.CURRENT_WEIGHT) +
-            performanceContribution +
-            consistencyContribution;
-
-        // Riconverti in scala 1-4 per compatibilità
-        return (finalVote / 10) * 4;
+        return (finalVote10 / 10) * 4;
     },
 
     /**
@@ -185,12 +186,12 @@ const utils = {
         return matches.some(match => {
             const gialliPlayers = match.teams?.gialli || [];
             const verdiPlayers = match.teams?.verdi || [];
-            
+
             const player1InMatch = gialliPlayers.some(p => p.playerId === playerId1) ||
-                                  verdiPlayers.some(p => p.playerId === playerId1);
+                verdiPlayers.some(p => p.playerId === playerId1);
             const player2InMatch = gialliPlayers.some(p => p.playerId === playerId2) ||
-                                   verdiPlayers.some(p => p.playerId === playerId2);
-            
+                verdiPlayers.some(p => p.playerId === playerId2);
+
             return player1InMatch && player2InMatch;
         });
     },
@@ -200,23 +201,23 @@ const utils = {
      */
     getVoteablePlayers: (currentUser, users, matches, votes) => {
         if (!currentUser) return [];
-    
+
         return users.filter(u => {
             if (u.id === currentUser.id) return false;
             if (u.id.startsWith('seed')) return false;
-    
+
             const matchCount = utils.countPlayerMatches(u.id, matches);
             if (matchCount < MATCH.MIN_MATCHES_FOR_VOTING) return false;
-    
+
             if (currentUser.hasVotedOffline && u.isInitialPlayer) return false;
-    
+
             if (!utils.havePlayedTogether(currentUser.id, u.id, matches)) return false;
-    
+
             const alreadyVoted = votes.some(v =>
                 v.voterId === currentUser.id && v.playerId === u.id
             );
             if (alreadyVoted) return false;
-    
+
             return true;
         });
     },
@@ -314,7 +315,7 @@ const utils = {
             const player = users.find(u => u.id === playerId);
             return player?.previousMatches || 0;
         }
-    
+
         const completedMatches = matches.filter(match => {
             if (match.status !== 'COMPLETED') return false;
             const gialliPlayers = match.teams?.gialli || [];
@@ -322,11 +323,11 @@ const utils = {
             return gialliPlayers.some(p => p.playerId === playerId) ||
                 verdiPlayers.some(p => p.playerId === playerId);
         }).length;
-    
+
         // Aggiungi le previousMatches se esistono
         const player = users.find(u => u.id === playerId);
         const previousMatches = player?.previousMatches || 0;
-        
+
         return completedMatches + previousMatches;
     },
 

@@ -47,13 +47,43 @@ function PlayerProfile({ player, votes = [], matches = [], matchVotes = [], isOw
                 )}
             </div>
 
-            <div className="profile-header">
-                <div className="avatar profile-avatar">
-                    {player.avatar ? <img src={player.avatar} alt={player.name} /> : utils.getInitials(player.name)}
+            <div className="player-profile">
+                <div className="player-info">
+                    <div className="avatar profile-info">
+                        {player.avatar ? <img src={player.avatar} alt={player.name} /> : utils.getInitials(player.name)}
+                    </div>
+                    {/* Badge Statistiche - A SINISTRA */}
+                    {(mvpCount > 0 || topScorerCount > 0 || cleanSheetCount > 0) && (
+                        <div className="badges profile-info">
+                            {mvpCount > 0 && (
+                                <div className="award-card mvp">
+                                    <div className="award-inner">
+                                        <img src={mvpIcon} alt="MVP" className="award-icon" />
+                                        <div className="title">x{mvpCount}</div>
+                                    </div>
+                                </div>
+                            )}
+                            {topScorerCount > 0 && (
+                                <div className="award-card scorer">
+                                    <div className="award-inner">
+                                        <img src={topScorerIcon} alt="Top Scorer" className="award-icon" />
+                                        <div className="title">x{topScorerCount}</div>
+                                    </div>
+                                </div>
+                            )}
+                            {player.isGoalkeeper && cleanSheetCount > 0 && (
+                                <div className="award-card clean-sheet">
+                                    <div className="award-inner">
+                                        <img src={cleanSheetIcon} alt="Clean Sheet" className="award-icon" />
+                                        <div className="title">x{cleanSheetCount}</div>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                    )}
                 </div>
-                <div className="profile-header-info">
+                <div className="name profile-info">
                     <h2>{player.name} {player.isGoalkeeper && '🧤'}</h2>
-                    <div className="votes-count">Sulla base di {voteCount} valutazioni ricevute</div>
                 </div>
                 {(player.preferredRole || (player.otherRoles && player.otherRoles.length > 0)) && (
                     <div className="role-info">
@@ -77,41 +107,15 @@ function PlayerProfile({ player, votes = [], matches = [], matchVotes = [], isOw
 
 
             {/* Container con Badge a sinistra e OVR al centro */}
-            <div className="profile-stats-row">
-                {/* Badge Statistiche - A SINISTRA */}
-                {(mvpCount > 0 || topScorerCount > 0 || cleanSheetCount > 0) && (
-                    <div className="award-cards-container">
-                        {mvpCount > 0 && (
-                            <div className="award-card mvp">
-                                <div className="award-inner">
-                                    <img src={mvpIcon} alt="MVP" className="award-icon" />
-                                    <div className="title">x{mvpCount}</div>
-                                </div>
-                            </div>
-                        )}
-                        {topScorerCount > 0 && (
-                            <div className="award-card scorer">
-                                <div className="award-inner">
-                                    <img src={topScorerIcon} alt="Top Scorer" className="award-icon" />
-                                    <div className="title">x{topScorerCount}</div>
-                                </div>
-                            </div>
-                        )}
-                        {player.isGoalkeeper && cleanSheetCount > 0 && (
-                            <div className="award-card clean-sheet">
-                                <div className="award-inner">
-                                    <img src={cleanSheetIcon} alt="Clean Sheet" className="award-icon" />
-                                    <div className="title">x{cleanSheetCount}</div>
-                                </div>
-                            </div>
-                        )}
-                    </div>
-                )}
+            <div className="player-stats">
+
                 {/* Overall Rating - AL CENTRO */}
                 {hasEnoughVotes && overall && (
                     <div className="overall-container">
                         <div className="overall-main">{utils.toBase10(overall).toFixed(2)}</div>
                         <div className="overall-label">Overall Rating</div>
+                        <div className="votes-count">(Sulla base di {voteCount} valutazioni ricevute)</div>
+
                     </div>
                 )}
             </div>
