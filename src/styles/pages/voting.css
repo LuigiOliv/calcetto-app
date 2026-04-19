@@ -167,6 +167,10 @@
 
 .vote-slider {
     flex: 1;
+    height: 18px;
+    /* uguale al thumb → l'elemento non collassa */
+    background: transparent;
+    /* solo la ::track è colorata */
     background: transparent;
     border-radius: 4px;
     outline: none;
@@ -178,7 +182,7 @@
 /* Slider Track */
 .vote-slider::-webkit-slider-track {
     width: 100%;
-    height: 8px;
+    height: 6px;
     background: rgba(255, 255, 255, 0.1);
     border-radius: 4px;
 }
