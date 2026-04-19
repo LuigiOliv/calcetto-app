@@ -168,11 +168,7 @@
 .vote-slider {
     flex: 1;
     height: 18px;
-    /* uguale al thumb → l'elemento non collassa */
-    background: transparent;
-    /* solo la ::track è colorata */
-    background: transparent;
-    border-radius: 4px;
+    +border-radius: 4px;
     outline: none;
     -webkit-appearance: none;
     appearance: none;
