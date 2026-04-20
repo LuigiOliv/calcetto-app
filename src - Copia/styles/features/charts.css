@@ -1,0 +1,278 @@
+/* ============================================================================
+   CHARTS / RADAR CON FLIP EFFECT - MOBILE FIRST
+   ============================================================================ */
+
+.charts-container {
+    display: grid;
+    gap: 15px;
+    margin-bottom: 30px;
+
+    /* Mobile: 1 colonna per visibilitÃ  ottimale */
+    grid-template-columns: 1fr;
+}
+
+.chart-box {
+    background: transparent;
+    perspective: 1000px;
+    cursor: pointer;
+
+    /* Mobile: height auto per contenuto */
+    height: auto;
+    min-height: 400px;
+}
+
+.chart-box-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    min-height: 400px;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+}
+
+/* Mobile: flip con click (classe .flipped aggiunta da JS) */
+.chart-box.flipped .chart-box-inner {
+    transform: rotateY(180deg);
+}
+
+.chart-box-front,
+.chart-box-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    min-height: 400px;
+    backface-visibility: hidden;
+    background: var(--bg-card);
+    border-radius: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    overflow-y: auto;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    /* Mobile: padding ridotto */
+    padding: 18px 15px;
+}
+
+.chart-box-front {
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+}
+
+.chart-box-back {
+    transform: rotateY(180deg);
+}
+
+/* Mobile: glow effect quando flipped */
+.chart-box.flipped .chart-box-front,
+.chart-box.flipped .chart-box-back {
+    border-color: var(--volt);
+    box-shadow: 0 0 20px rgba(210, 248, 0, 0.4), 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.chart-box h3 {
+    text-align: center;
+    font-family: 'Teko', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+
+    /* Mobile: dimensione ottimizzata */
+    margin-bottom: 12px;
+    font-size: 1.3rem;
+}
+
+.category-tecniche {
+    color: rgb(102, 126, 234);
+}
+
+.category-tattiche {
+    color: rgb(72, 187, 120);
+}
+
+.category-fisiche {
+    color: rgb(245, 101, 101);
+}
+
+.category-overall {
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 12px;
+
+    /* Mobile: dimensione ridotta */
+    font-size: 1.6rem;
+}
+
+.chart-canvas {
+    max-width: 100%;
+    aspect-ratio: 1 / 1;
+    margin: 0 auto;
+
+    /* Mobile: height responsive */
+    height: auto;
+}
+
+/* Tabella nel retro della card */
+.chart-box-back h4 {
+    text-align: center;
+    margin-bottom: 15px;
+    font-family: 'Teko', sans-serif;
+    font-size: 1.3rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.chart-detail-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.chart-detail-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.chart-detail-item span:first-child {
+    color: var(--text-muted);
+
+    /* Mobile: dimensione leggibile */
+    font-size: 0.85rem;
+}
+
+.chart-detail-item span:last-child {
+    font-weight: 700;
+    font-family: 'Teko', sans-serif;
+
+    /* Mobile: dimensione chiara */
+    font-size: 1.05rem;
+}
+
+/* Tablet: 2 colonne se spazio */
+@media (min-width: 768px) {
+    .charts-container {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 18px;
+        margin-bottom: 35px;
+    }
+
+    .chart-box {
+        min-height: 440px;
+    }
+
+    .chart-box-inner {
+        min-height: 440px;
+    }
+
+    .chart-box-front,
+    .chart-box-back {
+        min-height: 440px;
+        padding: 20px 18px;
+    }
+
+    .chart-box h3 {
+        font-size: 1.4rem;
+        margin-bottom: 14px;
+    }
+
+    .category-overall {
+        font-size: 1.8rem;
+        margin-bottom: 14px;
+    }
+
+
+    .chart-box-back h4 {
+        font-size: 1.4rem;
+        margin-bottom: 18px;
+    }
+
+    .chart-detail-list {
+        gap: 11px;
+    }
+
+    .chart-detail-item {
+        padding: 9px 0;
+    }
+
+    .chart-detail-item span:first-child {
+        font-size: 0.88rem;
+    }
+
+    .chart-detail-item span:last-child {
+        font-size: 1.08rem;
+    }
+}
+
+/* Desktop: 3 colonne e hover effect */
+@media (min-width: 1024px) {
+    .charts-container {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+        margin-bottom: 20px;
+    }
+
+    .chart-box {
+        height: 450px;
+        min-height: 400px;
+    }
+
+    .chart-box-inner {
+        min-height: 400px;
+    }
+
+    .chart-box-front,
+    .chart-box-back {
+        min-height: 350px;
+        padding: 20px;
+    }
+
+    /* Desktop: hover invece di click */
+    .chart-box:hover .chart-box-inner {
+        transform: rotateY(180deg);
+    }
+
+    /* Desktop: reset classe flipped (non piÃ¹ necessaria) */
+    .chart-box.flipped .chart-box-inner {
+        transform: none;
+    }
+
+    /* Desktop: glow effect su hover */
+    .chart-box:hover .chart-box-front,
+    .chart-box:hover .chart-box-back {
+        border-color: var(--volt);
+        box-shadow: 0 0 20px rgba(210, 248, 0, 0.4), 0 4px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .chart-box h3 {
+        font-size: 1.5rem;
+        margin-bottom: 15px;
+    }
+
+    .category-overall {
+        font-size: 2rem;
+        margin-bottom: 15px;
+    }
+
+
+    .chart-box-back h4 {
+        font-size: 1.5rem;
+        margin-bottom: 20px;
+    }
+
+    .chart-detail-list {
+        gap: 12px;
+    }
+
+    .chart-detail-item {
+        padding: 10px 0;
+    }
+
+    .chart-detail-item span:first-child {
+        font-size: 0.9rem;
+    }
+
+    .chart-detail-item span:last-child {
+        font-size: 1.1rem;
+    }
+}

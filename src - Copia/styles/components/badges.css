@@ -1,0 +1,213 @@
+/* Badge status partita (tab PARTITE) */
+.match-status {
+    display: inline-block;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-family: 'Teko', sans-serif;
+    border: 2px solid transparent;
+}
+
+.match-status.open {
+    background: rgba(210, 248, 0, 0.15);
+    color: var(--volt);
+    border-color: var(--volt);
+}
+
+.match-status.voting {
+    background: rgba(0, 240, 255, 0.15);
+    color: var(--electric-blue);
+    border-color: var(--electric-blue);
+}
+
+.match-status.completed {
+    background: rgba(107, 114, 128, 0.15);
+    color: #9CA3AF;
+    border-color: #6B7280;
+}
+
+/* Cancelled match badge */
+.match-status.cancelled {
+    background: rgba(239, 68, 68, 0.15);
+    color: #EF4444;
+    border: 2px solid #DC2626;
+}
+
+/* Cancellation reason display */
+.cancellation-reason {
+    display: block;
+    font-size: 0.85rem;
+    color: #EF4444;
+    font-style: italic;
+}
+
+/* DIV DEI RUOLI! */
+
+
+.role-info {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+    margin-top: 10px;
+    /* Mobile: allineamento centrato */
+    align-items: center;
+    text-align: center;
+}
+
+.role-item {}
+
+.role-label {
+    display: block;
+    color: #8892a6;
+    text-transform: uppercase;
+    font-weight: 400;
+    /* Mobile: dimensione ottimizzata */
+    font-size: 0.7rem;
+    letter-spacing: 1.3px;
+    margin-bottom: 6px;
+}
+
+.role-value {
+    color: white;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-family: 'Teko', sans-serif;
+    letter-spacing: 1px;
+    padding: 8px 14px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 2px;
+    border-left: 3px solid var(--volt);
+    /* Mobile: dimensione leggibile */
+    font-size: 1.2rem;
+}
+
+
+.role-badge {
+    color: white;
+    font-weight: 500;
+    text-transform: uppercase;
+    font-family: 'Teko', sans-serif;
+    letter-spacing: 1px;
+    padding: 6px 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 2px;
+    border-left: 2px solid var(--volt);
+    /* Mobile: dimensione chiara */
+    font-size: 1rem;
+}
+
+.role-badges {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+    /* Mobile: allineamento centrato */
+    align-items: center;
+}
+
+/* Tablet: layout orizzontale ma compatto */
+@media (min-width: 768px) {
+    .role-badges {
+        align-items: flex-end;
+    }
+
+    .role-badge {
+        font-size: 1.05rem;
+        padding: 6px 13px;
+    }
+}
+
+.profile-role-badge {
+    background: rgba(210, 248, 0, 0.15) !important;
+    color: var(--volt);
+    padding: 6px 14px;
+    border-radius: 15px;
+    font-size: 14px;
+    font-weight: 500;
+    border: 1px solid rgba(210, 248, 0, 0.3);
+}
+
+
+
+/* Container per badge e OVR sulla stessa riga */
+.profile-stats-row {
+    position: relative;
+}
+
+/* Badge a sinistra */
+.award-cards-container {
+    position: absolute;
+    left: 0;
+    top: 30px;
+    transform: translateY(-50%);
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    align-items: center;
+}
+
+.award-card:hover {
+    transform: translateY(-2px);
+}
+
+/* Card base scalabile */
+.award-card {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease;
+}
+
+.award-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+}
+
+/* Icone e Testi scalabili */
+/* Mobile */
+.award-icon {
+    width: 48px;
+    height: 48px;
+    margin-bottom: 0.4em;
+}
+
+.title {
+    font-weight: 800;
+    font-size: 1.2em;
+    letter-spacing: 0.05em;
+    text-align: center;
+}
+
+/* Tablet */
+@media (min-width: 768px) {
+    .award-icon {
+        width: 40px;
+        height: 40px;
+    }
+}
+
+/* Desktop */
+@media (min-width: 1024px) {
+    .award-icon {
+        width: 64px;
+        height: 64px;
+    }
+
+    .title {
+        font-size: 0.85rem;
+    }
+
+    .badges {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 8px;
+        align-items: center;
+    }
+}

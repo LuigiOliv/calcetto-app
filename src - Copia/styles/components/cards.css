@@ -1,0 +1,430 @@
+/* ============================================================================
+   TAB PARTITE - CSS DEDICATO
+   ============================================================================ */
+
+/* LISTA PARTITE - Container */
+.matches-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    width: 100%;
+}
+
+/* Desktop: centra al 60% */
+@media (min-width: 768px) {
+    .matches-list {
+        max-width: 70%;
+        margin: 0 auto;
+    }
+}
+
+/* ============================================================================
+   MATCH CARD - Mobile First - Aggiusta il div delle singole partite
+   ============================================================================ */
+
+.match-card {
+    background: var(--bg-card);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+    padding: 20px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    min-width: 80%
+}
+
+/* Bordino laterale */
+.match-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    transition: all 0.3s ease;
+}
+
+.match-card:hover {
+    transform: translateY(-3px);
+    background: var(--bg-hover);
+    box-shadow: 0 0 20px rgba(210, 248, 0, 0.15);
+    border-color: var(--volt);
+}
+
+.match-card:hover::before {
+    width: 6px;
+    box-shadow: 0 0 10px currentColor;
+}
+
+/* Desktop: layout orizzontale 3 colonne */
+@media (min-width: 768px) {
+    .match-card {
+        display: grid;
+        grid-template-columns: auto 1fr auto;
+        gap: 20px;
+        align-items: center;
+        padding: 25px 30px;
+        min-width: 600px
+    }
+}
+
+/*****************************************/
+/* MATCH CARDS */
+/* ***************************************/
+
+/* Sinistra: Badge status */
+.match-card-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+@media (min-width: 768px) {
+    .match-card-left {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+/* Centro: Data partita */
+.match-card-center {
+    flex: 1;
+}
+
+.match-card-center h3 {
+    font-size: 1.6rem;
+    margin: 0;
+    color: white;
+    font-family: 'Teko', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    line-height: 1.2;
+}
+
+@media (min-width: 768px) {
+    .match-card-center h3 {
+        font-size: 1.8rem;
+    }
+}
+
+/* Destra: Info dettagliate */
+.match-card-right {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+@media (min-width: 768px) {
+    .match-card-right {
+        align-items: flex-end;
+        text-align: right;
+    }
+}
+
+.match-info {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    font-family: 'Roboto', sans-serif;
+    line-height: 1.5;
+}
+
+/* ============================================================================
+   STATI PARTITA
+   ============================================================================ */
+
+/* Colori bordino sinistro */
+.match-card.open::before {
+    background: var(--volt);
+}
+
+.match-card.voting::before {
+    background: var(--electric-blue);
+}
+
+.match-card.completed::before {
+    background: #6B7280;
+}
+
+/* ✅ AGGIUNTO: Bordino rosso per partite annullate */
+.match-card.cancelled::before {
+    background: #DC2626;
+}
+
+.match-cancelled-view {
+    padding: 2rem;
+    text-align: center;
+}
+
+.cancelled-message {
+    background: rgba(239, 68, 68, 0.1);
+    border: 2px solid #DC2626;
+    border-radius: 12px;
+    padding: 2rem;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.cancelled-message h2 {
+    color: #EF4444;
+    margin-bottom: 1rem;
+}
+
+.cancellation-details {
+    margin-top: 1.5rem;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 8px;
+    text-align: left;
+}
+
+.cancellation-date {
+    margin-top: 1rem;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+
+/* ============================================================================
+   DETTAGLIO PARTITA - ISCRIZIONI
+   ============================================================================ */
+
+.detail-card {
+    background: var(--bg-card);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.detail-header {
+    background: linear-gradient(135deg, #1a202c, #0d1117);
+    padding: 20px;
+    border-bottom: 2px solid var(--volt);
+}
+
+.detail-header .match-status {
+    display: inline-block;
+    margin-bottom: 20px;
+    padding: 6px 14px;
+    font-size: 0.8rem;
+}
+
+/* Header Info Grid - Mobile First */
+.header-info-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.header-main {
+    flex: 1;
+}
+
+.detail-date {
+    font-family: 'Teko', sans-serif;
+    font-size: 1.8rem;
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+}
+
+.detail-time,
+.detail-location {
+    font-size: 1rem;
+    color: var(--text-muted);
+    margin: 5px 0;
+    font-family: 'Roboto', sans-serif;
+}
+
+.detail-location {
+    font-size: 0.9rem;
+}
+
+/* Desktop: layout a 2 colonne */
+@media (min-width: 768px) {
+    .detail-header {
+        padding: 30px;
+    }
+
+    .header-info-grid {
+        flex-direction: row;
+        align-items: flex-start;
+    }
+
+    .detail-date {
+        font-size: 2.2rem;
+    }
+}
+
+/* Recap Box Iscritti */
+.header-aside {
+    display: flex;
+    justify-content: flex-start;
+}
+
+@media (min-width: 768px) {
+    .header-aside {
+        justify-content: flex-end;
+    }
+}
+
+.recap-box {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    padding: 15px 20px;
+}
+
+.recap-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1rem;
+    font-family: 'Roboto', sans-serif;
+    color: var(--text-main);
+}
+
+.recap-row strong {
+    font-family: 'Teko', sans-serif;
+    font-size: 1.8rem;
+    color: var(--volt);
+}
+
+/*****************************************/
+/* PLAYER CARDS (NELLA TAB VALUTA) */
+/* ***************************************/
+
+.players-grid {
+    display: grid;
+    gap: 15px;
+
+    /* Mobile: 1 colonna per massima leggibilitÃ  e touch target */
+    grid-template-columns: 1fr;
+}
+
+.player-card {
+    background: var(--bg-card);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+    text-align: center;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+
+    /* Mobile: padding generoso per touch */
+    padding: 25px 20px;
+
+    /* Tap highlight ottimizzato */
+    -webkit-tap-highlight-color: rgba(210, 248, 0, 0.1);
+}
+
+/* Barra laterale decorativa */
+.player-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: var(--electric-blue);
+    transition: all 0.3s ease;
+}
+
+/* Hover (principalmente desktop) e active (touch) */
+.player-card:hover,
+.player-card:active {
+    transform: translateY(-3px);
+    background: var(--bg-hover);
+    box-shadow: var(--shadow-glow);
+    border-color: var(--volt);
+}
+
+.player-card:hover::before,
+.player-card:active::before {
+    background: var(--volt);
+    box-shadow: 0 0 10px var(--volt);
+    width: 6px;
+}
+
+.player-card .avatar {
+    margin-bottom: 15px;
+    /* Mobile: avatar piÃ¹ grande per visibilitÃ  */
+    width: 90px;
+    height: 90px;
+    font-size: 2.2rem;
+    border-width: 3px;
+}
+
+.player-card h3 {
+    color: white;
+    font-size: 1.5rem;
+    /* Mobile: leggermente ridotto */
+    margin: 12px 0 8px 0;
+}
+
+.player-card .status {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    font-weight: 500;
+    letter-spacing: 1px;
+    margin-bottom: 0;
+}
+
+/* Tablet: 2 colonne */
+@media (min-width: 768px) {
+    .players-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 18px;
+    }
+
+    .player-card {
+        padding: 28px 20px;
+    }
+
+    .player-card .avatar {
+        width: 85px;
+        height: 85px;
+        font-size: 2.1rem;
+    }
+
+    .player-card h3 {
+        font-size: 1.55rem;
+    }
+}
+
+/* Desktop: auto-fill responsive */
+@media (min-width: 1024px) {
+    .players-grid {
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 20px;
+    }
+
+    .player-card {
+        padding: 30px 20px;
+    }
+
+    .player-card .avatar {
+        width: 80px;
+        height: 80px;
+        font-size: 2rem;
+    }
+
+    .player-card h3 {
+        font-size: 1.6rem;
+    }
+
+    .player-card:hover {
+        transform: translateY(-5px);
+    }
+}

@@ -1,0 +1,152 @@
+.modal-overlay {
+    background: rgba(0, 0, 0, 0.9);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+
+    /* Mobile: padding per sicurezza */
+    padding: 15px;
+}
+
+.modal-content {
+    background: var(--bg-card);
+    border: 1px solid var(--text-muted);
+    box-shadow: var(--shadow-strong);
+    border-radius: 4px;
+    max-height: 90vh;
+    overflow-y: auto;
+
+    /* Mobile: full width con padding ridotto */
+    width: 100%;
+    max-width: 450px;
+    padding: 25px 20px;
+}
+
+.modal-content h2 {
+    margin-bottom: 12px;
+}
+
+.modal-content p {
+    margin-bottom: 20px;
+}
+
+.modal-divider {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    text-align: center;
+
+    /* Mobile: spacing ottimizzato */
+    padding-top: 18px;
+    margin-top: 8px;
+}
+
+.modal-hint {
+    margin-bottom: 12px;
+    opacity: 0.8;
+
+    /* Mobile: dimensione chiara */
+    font-size: 0.9rem;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 18px;
+
+    /* Mobile: layout verticale */
+    flex-direction: column;
+}
+
+.modal-actions .btn {
+    width: 100%;
+    /* Mobile: button full width */
+}
+
+.modal-large {
+    max-width: 650px;
+}
+
+/* Tablet */
+@media (min-width: 768px) {
+    .modal-overlay {
+        padding: 20px;
+    }
+
+    .modal-content {
+        max-width: 480px;
+        padding: 35px 30px;
+    }
+
+    .modal-content h2 {
+        margin-bottom: 14px;
+    }
+
+    .modal-content p {
+        margin-bottom: 23px;
+    }
+
+    .modal-divider {
+        padding-top: 19px;
+        margin-top: 9px;
+    }
+
+    .modal-hint {
+        font-size: 0.88rem;
+        margin-bottom: 14px;
+    }
+
+    .modal-actions {
+        flex-direction: row;
+        gap: 14px;
+        margin-top: 19px;
+    }
+
+    .modal-actions .btn {
+        width: auto;
+        flex: 1;
+    }
+
+    .modal-large {
+        max-width: 675px;
+    }
+}
+
+/* Desktop */
+@media (min-width: 1024px) {
+    .modal-content {
+        max-width: 500px;
+        padding: 40px;
+    }
+
+    .modal-content h2 {
+        margin-bottom: 15px;
+    }
+
+    .modal-content p {
+        margin-bottom: 25px;
+    }
+
+    .modal-divider {
+        padding-top: 20px;
+        margin-top: 10px;
+    }
+
+    .modal-hint {
+        font-size: 0.875rem;
+        margin-bottom: 15px;
+    }
+
+    .modal-actions {
+        gap: 15px;
+        margin-top: 20px;
+    }
+
+    .modal-large {
+        max-width: 700px;
+    }
+}

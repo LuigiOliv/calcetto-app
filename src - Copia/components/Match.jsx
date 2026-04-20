@@ -94,10 +94,7 @@ export function MatchCard({ match, currentUser, users, onClick }) {
                             Gialli {match.score.gialli} - {match.score.verdi} Verdi
                         </div>
                         <div className="match-info match-info--small">
-                            {(() => {
-                                const top = utils.getMatchTopScorer(match);
-                                return top ? `Top scorer: 🏆 ${top.playerName} (${top.count} gol)` : '';
-                            })()}
+                            Top scorer: 🏆 {utils.getPlayerNameById(match.topScorer, users)}
                         </div>
                     </>
                 )}

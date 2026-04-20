@@ -1,0 +1,271 @@
+/* ============================================================================
+   VISTA VOTAZIONI - MOBILE FIRST
+   ============================================================================ */
+
+.voting-card {
+    background: var(--bg-card);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.voting-header {
+    background: linear-gradient(135deg, #1a202c, #0d1117);
+    padding: 20px;
+    border-bottom: 2px solid var(--electric-blue);
+}
+
+.voting-header .match-status {
+    display: inline-block;
+    margin-bottom: 20px;
+    padding: 6px 14px;
+    font-size: 0.8rem;
+}
+
+/* Score Display - Mobile */
+.voting-score {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.team-name {
+    font-family: 'Teko', sans-serif;
+    font-size: 1.3rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 600;
+}
+
+.team-name.gialli {
+    color: #FFD700;
+}
+
+.team-name.verdi {
+    color: #10B981;
+}
+
+.voting-score .score {
+    font-family: 'Teko', sans-serif;
+    font-size: 3rem;
+    color: white;
+    font-weight: 700;
+    line-height: 1;
+}
+
+/* Desktop: score in riga */
+@media (min-width: 768px) {
+    .voting-header {
+        padding: 30px;
+    }
+
+    .voting-score {
+        flex-direction: row;
+        justify-content: center;
+        gap: 20px;
+    }
+
+    .team-name {
+        font-size: 1.5rem;
+    }
+}
+
+.voting-info {
+    text-align: center;
+}
+
+.voting-date {
+    font-family: 'Teko', sans-serif;
+    font-size: 1.5rem;
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+}
+
+.voting-note {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    font-style: italic;
+}
+
+/* ============================================================================
+   SEZIONI VOTAZIONE
+   ============================================================================ */
+
+.voting-content {
+    padding: 20px;
+}
+
+@media (min-width: 768px) {
+    .voting-content {
+        padding: 30px;
+    }
+}
+
+.team-voting-section {
+    margin-bottom: 30px;
+}
+
+.team-section-title {
+    font-family: 'Teko', sans-serif;
+    font-size: 1.5rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid currentColor;
+}
+
+.team-section-title.gialli {
+    color: #FFD700;
+}
+
+.team-section-title.verdi {
+    color: #10B981;
+}
+
+/* ============================================================================
+   VOTE ROW - Riga singolo voto (Mobile First)
+   ============================================================================ */
+
+.vote-row {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+
+.vote-row-name {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: white;
+}
+
+/* Desktop: layout orizzontale */
+@media (min-width: 768px) {
+    .vote-row {
+        flex-direction: row;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .vote-row-name {
+        min-width: 150px;
+    }
+}
+
+/* ============================================================================
+   SLIDER
+   ============================================================================ */
+
+.vote-slider {
+    flex: 1;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    +border-radius: 4px;
+    outline: none;
+    -webkit-appearance: none;
+    appearance: none;
+    touch-action: pan-y;
+}
+
+/* Slider Track */
+.vote-slider::-webkit-slider-track {
+    width: 100%;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+}
+
+.vote-slider::-moz-range-track {
+    width: 100%;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+}
+
+/* Slider Thumb */
+.vote-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    background: var(--electric-blue);
+    border: 2px solid white;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
+    transition: all 0.2s ease;
+}
+
+.vote-slider::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    background: var(--electric-blue);
+    border: 2px solid white;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
+    transition: all 0.2s ease;
+}
+
+.vote-slider::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+    box-shadow: 0 0 15px rgba(0, 240, 255, 0.8);
+}
+
+.vote-slider::-moz-range-thumb:hover {
+    transform: scale(1.2);
+    box-shadow: 0 0 15px rgba(0, 240, 255, 0.8);
+}
+
+/* Valore Voto */
+.vote-value {
+    font-family: 'Teko', sans-serif;
+    font-size: 1.8rem;
+    color: var(--electric-blue);
+    font-weight: 700;
+    text-align: center;
+    min-width: 50px;
+}
+
+@media (min-width: 768px) {
+    .vote-value {
+        text-align: right;
+    }
+}
+
+/* ============================================================================
+   VOTE ROW READONLY - Voti giÃ  inviati
+   ============================================================================ */
+
+.vote-row.readonly {
+    background: rgba(255, 255, 255, 0.01);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.vote-readonly-value {
+    font-family: 'Teko', sans-serif;
+    font-size: 1.5rem;
+    color: var(--text-muted);
+    font-weight: 600;
+    text-align: center;
+}
+
+@media (min-width: 768px) {
+    .vote-row.readonly {
+        justify-content: space-between;
+    }
+
+    .vote-readonly-value {
+        text-align: right;
+        min-width: 50px;
+    }
+}

@@ -1,0 +1,61 @@
+/*
+======================================================================
+==========CALCETTO RATING APP - STYLESHEET
+© 2025 Luigi Oliviero - Tutti i diritti riservati 
+Questo foglio di stile è protetto da copyright e leggi sulla proprietà intellettuale italiana ed europea. 
+È SEVERAMENTE VIETATO senza autorizzazione scritta: - Copiare, riprodurre o distribuire questo codice - 
+Modificare o creare opere derivate - Utilizzare per scopi commerciali - 
+Rimuovere o alterare questo avviso di copyright 
+
+Uso non autorizzato sarà perseguito legalmente. 
+Per licenze commerciali: luigi.oliviero@gmail.com 
+
+--- CALCETTO RATING APP - STYLESHEET 
+© 2025 Luigi Oliviero - All Rights Reserved 
+This stylesheet is protected by Italian and European copyright and intellectual property laws. 
+STRICTLY PROHIBITED without written authorization: - Copying, reproducing, or distributing this code - 
+Modifying or creating derivative works - Commercial use - 
+Removing or altering this copyright notice 
+
+Unauthorized use will be prosecuted. 
+For commercial licensing: luigi.oliviero@gmail.com 
+
+Version: 1.0 Mobile-First | Date: November 2025 Author: Luigi Oliviero 
+Project: Calcetto del Giovedì 
+================================================================================
+*/
+
+/* 1. BASE - Must load first */
+@import './base/variables.css';
+@import './base/reset.css';
+@import './base/typography.css';
+
+/* 2. LAYOUT - Core layout components */
+@import './layout/containers.css';
+@import './layout/avatar.css';
+@import './layout/header.css';
+@import './layout/navigation.css';
+
+/* 3. COMPONENTS - Reusable UI elements */
+@import './components/buttons.css';
+@import './components/forms.css';
+@import './components/modals.css';
+@import './components/badges.css';
+@import './components/cards.css';
+
+/* 4. PAGES - Page-specific styles */
+@import './pages/auth.css';
+@import './pages/voting.css';
+@import './pages/rating-form.css';
+@import './pages/profile.css';
+@import './pages/leaderboard.css';
+@import './pages/admin.css';
+@import './pages/results.css';
+@import './pages/matches.css';
+
+/* 5. FEATURES - Special features */
+@import './features/charts.css';
+@import './features/debug.css';
+
+/* 6. UTILITIES - Helper classes (load last) */
+@import './utilities/helpers.css';

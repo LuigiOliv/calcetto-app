@@ -1,0 +1,95 @@
+.app-container {
+    /* Mobile: full width, nessuna restrizione */
+    width: 100%;
+    min-height: 100vh;
+    margin: 0 auto;
+    padding: 0;
+    /* Il padding viene gestito dai children */
+}
+
+.content {
+    /* Mobile: padding minimo per massimizzare spazio */
+    padding: 0;
+    margin: 0 auto;
+}
+
+/* Tablet: inizia a centrare con max-width */
+@media (min-width: 768px) {
+    .content {
+        padding: 0 1.5rem;
+        max-width: 900px;
+    }
+}
+
+/* Desktop: layout centrato con larghezza controllata */
+@media (min-width: 1024px) {
+    .app-container {
+        max-width: 70%;
+        min-width: 800px;
+        /* Solo su desktop ha senso avere min-width */
+    }
+
+    .content {
+        padding: 0 2rem;
+        max-width: 1400px;
+    }
+}
+
+.section-container {
+    /* Mobile: full width disponibile */
+    width: 100%;
+    margin: 0 auto 60px auto;
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+
+    /* Mobile: gap ridotto */
+    gap: 10px;
+    flex-wrap: wrap;
+    /* Permette wrap se necessario */
+}
+
+.section-header h2 {
+    margin: 0;
+    flex: 1;
+    font-size: 1.5rem;
+    /* Mobile: piÃ¹ piccolo */
+    min-width: 200px;
+    /* Previene compressione eccessiva */
+}
+
+/* Tablet */
+@media (min-width: 768px) {
+    .section-container {
+        width: 95%;
+        max-width: 900px;
+    }
+
+    .section-header {
+        gap: 15px;
+        margin-bottom: 20px;
+    }
+
+    .section-header h2 {
+        font-size: 1.8rem;
+    }
+}
+
+/* Desktop */
+@media (min-width: 1024px) {
+    .section-container {
+        width: 90%;
+        max-width: 1000px;
+    }
+
+    .section-header {
+        gap: 20px;
+    }
+
+    .section-header h2 {
+        font-size: 2rem;
+    }
+}

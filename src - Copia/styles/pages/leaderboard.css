@@ -1,0 +1,392 @@
+/* ============================================================================
+   CLASSIFICHE COMPLETE - NUOVA VISTA UNICA
+   ============================================================================ */
+
+/* Sezione Overall */
+.rankings-overall-section {
+    margin-bottom: 30px;
+}
+
+.rankings-section-title {
+    color: var(--volt);
+    font-family: 'Teko', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 1.4rem;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid rgba(210, 248, 0, 0.2);
+}
+
+/* Tablet */
+@media (min-width: 768px) {
+    .rankings-section-title {
+        font-size: 1.6rem;
+    }
+}
+
+/* Desktop */
+@media (min-width: 1024px) {
+    .rankings-section-title {
+        font-size: 1.8rem;
+    }
+}
+
+/* ============================================================================
+   CLASSIFICHE / LEADERBOARD
+   ============================================================================ */
+
+.no-votes {
+    text-align: center;
+    padding: 60px 20px;
+    margin-top: 20px;
+    background: var(--bg-card);
+    border-radius: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.no-votes h3 {
+    color: var(--volt);
+    margin-bottom: 15px;
+}
+
+.no-votes p {
+    color: var(--text-muted);
+    margin: 10px 0;
+}
+
+.leaderboard-item {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    background: var(--bg-card);
+    border-radius: 4px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    gap: 20px;
+}
+
+.leaderboard-item:hover {
+    transform: translateY(-2px);
+    border-color: var(--volt);
+    background: var(--bg-hover);
+}
+
+.leaderboard-item.rank-1 {
+    border-left: 4px solid #FFD700;
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
+}
+
+.leaderboard-item.rank-1:hover {
+    box-shadow: 0 0 25px rgba(255, 215, 0, 0.4);
+}
+
+.leaderboard-item.rank-2 {
+    border-left: 4px solid #C0C0C0;
+    box-shadow: 0 0 15px rgba(192, 192, 192, 0.2);
+}
+
+.leaderboard-item.rank-2:hover {
+    box-shadow: 0 0 25px rgba(192, 192, 192, 0.4);
+}
+
+.leaderboard-item.rank-3 {
+    border-left: 4px solid #CD7F32;
+    box-shadow: 0 0 15px rgba(205, 127, 50, 0.2);
+}
+
+.leaderboard-item.rank-3:hover {
+    box-shadow: 0 0 25px rgba(205, 127, 50, 0.4);
+}
+
+/* Grid Macrocategorie */
+
+.rankings-macro-grid {
+    display: grid;
+    gap: 15px;
+    margin-bottom: 30px;
+    /* Mobile: 1 colonna */
+    grid-template-columns: 1fr;
+}
+
+/* Tablet */
+@media (min-width: 768px) {
+    .rankings-macro-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+    }
+}
+
+/* Desktop */
+@media (min-width: 1024px) {
+    .rankings-macro-grid {
+        gap: 25px;
+    }
+}
+
+/* Queste sono le card per macrocategoria */
+.rankings-macro-card {
+    background: var(--bg-card);
+    border-radius: 8px;
+    padding: 15px;
+    border: 1px solid transparent;
+    transition: all 0.3s;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+.rankings-macro-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--volt);
+    /* ✅ Cambiato da currentColor */
+    opacity: 1;
+    /* ✅ Cambiato da 0.5 */
+}
+
+.rankings-macro-card:hover,
+.rankings-macro-card:active {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+    border-color: var(--volt);
+    /* ✅ Cambiato da currentColor */
+}
+
+.rankings-macro-tecnica {}
+
+.rankings-macro-tattica {}
+
+.rankings-macro-fisica {}
+
+.rankings-macro-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.rankings-macro-emoji {
+    font-size: 28px;
+}
+
+.rankings-macro-title {
+    color: var(--volt);
+    font-family: 'Teko', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Desktop */
+@media (min-width: 1024px) {
+    .rankings-macro-emoji {
+        font-size: 32px;
+    }
+
+    .rankings-macro-title {
+        font-size: 1.7rem;
+    }
+}
+
+/* ============================================================================
+   CLASSIFICHE COMPACT - VISTA COMPATTA - classifiche per skill
+   ============================================================================ */
+.rankings-compact-list {
+    flex-direction: column;
+    gap: 8px;
+}
+
+.rankings-compact-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 6px;
+    transition: all 0.2s;
+}
+
+.rankings-compact-item:hover,
+.rankings-compact-item:active {
+    background: rgba(255, 255, 255, 0.08);
+    transform: translateX(3px);
+}
+
+/* Grid Skill */
+.rankings-skills-section {
+    max-width: 100%;
+    /* ✅ NUOVO: Limita larghezza */
+    margin: 0 auto;
+}
+
+.rankings-skills-grid {
+    display: grid;
+    gap: 12px;
+    grid-template-columns: 1fr;
+    /* Mobile: 1 colonna */
+}
+
+/* Tablet */
+@media (min-width: 768px) {
+    .rankings-skills-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+}
+
+/* Desktop */
+@media (min-width: 1024px) {
+    .rankings-skills-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 18px;
+    }
+}
+
+.rankings-skill-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 6px;
+    padding: 15px;
+    transition: all 0.3s;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+.rankings-skill-card:hover,
+.rankings-skill-card:active {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(210, 248, 0, 0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.rankings-skill-title {
+    color: var(--volt);
+    font-size: 0.95rem;
+    font-weight: 700;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-family: 'Roboto', sans-serif;
+}
+
+/* Desktop */
+@media (min-width: 1024px) {
+    .rankings-skill-title {
+        font-size: 1rem;
+    }
+}
+
+.rankings-mini-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.rankings-mini-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px;
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 4px;
+    transition: all 0.2s;
+}
+
+.rankings-mini-item:hover,
+.rankings-mini-item:active {
+    background: rgba(255, 255, 255, 0.06);
+}
+
+.rank-mini {
+    font-size: 14px;
+    font-weight: 700;
+    min-width: 22px;
+    text-align: center;
+    color: var(--text-muted);
+}
+
+.rankings-skill-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 6px;
+    padding: 15px;
+    transition: all 0.3s;
+    cursor: pointer;
+}
+
+.rankings-skill-card:hover,
+.rankings-skill-card:active {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(210, 248, 0, 0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* ============================================================================
+   STILI AGGIUNTIVI PER LEADERBOARD TABS
+   ============================================================================ */
+
+.leaderboard-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.leaderboard-tab {
+    flex: 1 1 30%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 14px;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.05);
+    color: inherit;
+    font-weight: 600;
+    transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.leaderboard-tab--active {
+    background: var(--volt, #D2F800);
+    border-color: transparent;
+    color: #0d0d0d;
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.25);
+}
+
+.leaderboard-tabpanels {
+    width: 100%;
+    touch-action: pan-y;
+}
+
+.leaderboard-tabpanel {
+    width: 100%;
+}
+
+.leaderboard-tabpanel--hidden {
+    display: none;
+}
+
+.leaderboard-swipe-hint {
+    text-align: center;
+    font-size: 0.85rem;
+    opacity: 0.65;
+    margin-bottom: 16px;
+}
+
+@media (min-width: 768px) {
+    .leaderboard-swipe-hint {
+        display: none;
+    }
+}

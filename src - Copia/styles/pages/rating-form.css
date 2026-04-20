@@ -1,0 +1,155 @@
+/* ============================================================================
+   RATING FORM - MOBILE FIRST
+   ============================================================================ */
+
+.rating-form {
+    background: var(--bg-card);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    margin: 0 auto;
+
+    /* Mobile: full width disponibile */
+    width: 100%;
+    max-width: none;
+}
+
+.form-header {
+    background: linear-gradient(135deg, #1a202c, #0d1117);
+    border-bottom: 2px solid var(--volt);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 12px;
+
+    /* Mobile: padding ridotto */
+    padding: 20px 15px;
+}
+
+.form-header h2 {
+    margin: 0;
+}
+
+.form-header p {
+    margin: 0;
+    font-size: 0.85rem;
+    /* Mobile: piÃ¹ piccolo */
+}
+
+.category-section {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+
+    /* Mobile: padding ridotto per massimizzare spazio */
+    padding: 20px 15px;
+}
+
+.category-section:last-of-type {
+    border-bottom: none;
+}
+
+.category-title {
+    font-family: 'Teko', sans-serif;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+
+    /* Mobile: dimensione ridotta */
+    font-size: 1.4rem;
+    margin-bottom: 15px;
+}
+
+.category-title::before {
+    content: '';
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background: currentColor;
+    margin-right: 10px;
+    box-shadow: 0 0 10px currentColor;
+    flex-shrink: 0;
+}
+
+.skill-item {
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 4px;
+
+    /* Mobile: layout verticale per migliore touch */
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    margin-bottom: 12px;
+    padding: 12px;
+}
+
+.skill-name {
+    color: var(--text-main);
+    flex: 1;
+
+    /* Mobile: dimensione chiara */
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+/* Tablet: layout orizzontale */
+@media (min-width: 768px) {
+    .rating-form {
+        max-width: 700px;
+    }
+
+    .form-header {
+        padding: 25px 20px;
+        gap: 15px;
+    }
+
+    .form-header p {
+        font-size: 0.9rem;
+    }
+
+    .category-section {
+        padding: 22px 20px;
+    }
+
+    .category-title {
+        font-size: 1.6rem;
+        margin-bottom: 18px;
+    }
+
+    .skill-item {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        gap: 0;
+        margin-bottom: 14px;
+        padding: 10px;
+    }
+
+    .skill-name {
+        font-size: 1rem;
+    }
+}
+
+/* Desktop: dimensioni originali */
+@media (min-width: 1024px) {
+    .rating-form {
+        max-width: 800px;
+    }
+
+    .form-header {
+        padding: 30px;
+    }
+
+    .category-section {
+        padding: 25px;
+    }
+
+    .category-title {
+        font-size: 1.8rem;
+        margin-bottom: 20px;
+    }
+
+    .skill-item {
+        margin-bottom: 15px;
+    }
+}

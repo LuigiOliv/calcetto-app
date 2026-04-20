@@ -1,0 +1,145 @@
+.header {
+    background: var(--bg-card);
+    border-bottom: 1px solid var(--volt);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    margin-bottom: 15px;
+
+    /* Mobile: layout verticale centrato, padding ridotto */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 15px;
+    padding: 1rem;
+}
+
+.header-left h1 {
+    margin-bottom: 0;
+}
+
+.header-left p {
+    color: var(--text-muted);
+    font-size: 0.75rem;
+    /* Mobile: ridotto per salvare spazio */
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 5px 0 0 0;
+    font-weight: 400;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    /* Mobile: gap ridotto */
+    background: rgba(255, 255, 255, 0.05);
+    padding: 8px 12px;
+    border-radius: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    width: 100%;
+    /* Mobile: full width per massimizzare spazio */
+    max-width: 400px;
+}
+
+.user-info>div:not(.avatar) {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 0;
+    /* Previene overflow del testo */
+}
+
+/* Menu dropdown utente */
+.user-menu-btn {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: var(--text-muted);
+    padding: 5px 10px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border-radius: 2px;
+    line-height: 1;
+}
+
+.user-menu-btn:hover {
+    color: var(--volt);
+    border-color: var(--volt);
+}
+
+.user-dropdown-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    margin-top: 10px;
+    background: var(--bg-card);
+    border: 1px solid var(--volt);
+    border-radius: 4px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+    min-width: 200px;
+    z-index: 1000;
+    overflow: hidden;
+}
+
+.dropdown-item {
+    width: 100%;
+    background: transparent;
+    border: none;
+    color: var(--text-main);
+    padding: 15px 20px;
+    text-align: left;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.dropdown-item:last-child {
+    border-bottom: none;
+}
+
+.dropdown-item:hover {
+    background: rgba(210, 248, 0, 0.1);
+    color: var(--volt);
+}
+
+.dropdown-item.logout {
+    color: var(--hot-red);
+}
+
+.dropdown-item.logout:hover {
+    background: rgba(255, 46, 99, 0.1);
+}
+
+
+
+/* Tablet: layout orizzontale */
+@media (min-width: 768px) {
+    .header {
+        flex-direction: row;
+        justify-content: space-between;
+        text-align: left;
+        padding: 1.2rem 1.5rem;
+        margin-bottom: 20px;
+    }
+
+    .header-left p {
+        font-size: 0.85rem;
+    }
+
+    .user-info {
+        width: auto;
+        gap: 15px;
+        padding: 8px 15px;
+    }
+}
+
+/* Desktop: padding generoso */
+@media (min-width: 1024px) {
+    .header {
+        padding: 1.2rem 2rem;
+    }
+}

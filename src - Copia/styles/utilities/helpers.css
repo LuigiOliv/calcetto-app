@@ -1,0 +1,118 @@
+/* ============================================================================
+   ADDITIONAL UTILITY CLASSES - MOBILE FIRST
+   ============================================================================ */
+
+.error-message {
+    color: var(--hot-red);
+    margin-bottom: 18px;
+
+    /* Mobile: dimensione leggibile */
+    font-size: 0.9rem;
+}
+
+.user-name {
+    font-weight: 600;
+    color: var(--text-main);
+
+    /* Mobile: prevent overflow */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.user-email {
+    color: var(--text-muted);
+
+    /* Mobile: dimensione ridotta */
+    font-size: 0.8rem;
+
+    /* Prevent overflow */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Desktop */
+@media (min-width: 1024px) {
+    .error-message {
+        font-size: 0.875rem;
+        margin-bottom: 20px;
+    }
+
+    .user-email {
+        font-size: 0.8125rem;
+    }
+}
+
+.success-message {
+    position: fixed;
+    background: var(--volt);
+    color: black;
+    border-radius: 4px;
+    font-weight: 600;
+    box-shadow: 0 4px 20px var(--volt);
+    z-index: 1000;
+    animation: slideIn 0.3s ease;
+
+    /* Mobile: posizionamento e dimensione ottimizzati */
+    top: 10px;
+    right: 10px;
+    left: 10px;
+    padding: 12px 15px;
+    font-size: 0.9rem;
+}
+
+/* Tablet */
+@media (min-width: 768px) {
+    .success-message {
+        top: 15px;
+        right: 15px;
+        left: auto;
+        padding: 14px 20px;
+        font-size: 0.95rem;
+    }
+}
+
+/* Desktop */
+@media (min-width: 1024px) {
+    .success-message {
+        top: 20px;
+        right: 20px;
+        padding: 15px 25px;
+        font-size: 1rem;
+    }
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(400px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* ============================================================================
+DEADLINE MESSAGE
+============================================================================ */
+
+.deadline-msg {
+    background: rgba(210, 248, 0, 0.1);
+    border: 1px solid rgba(210, 248, 0, 0.3);
+    border-radius: 4px;
+    padding: 15px;
+    margin: 25px 0;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    text-align: center;
+    line-height: 1.6;
+}
+
+.deadline-msg.closed {
+    background: rgba(245, 101, 101, 0.1);
+    border-color: rgba(245, 101, 101, 0.3);
+    color: var(--hot-red);
+}

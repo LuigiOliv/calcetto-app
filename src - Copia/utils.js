@@ -377,75 +377,13 @@ const utils = {
     },
 
     /**
-     * Dal nuovo array goals[], restituisce il miglior marcatore (escludendo autogoal).
-     * @returns {{ playerId, playerName, count }|null}
+     * Calcola quante volte un giocatore è stato capocannoniere
      */
-    getTopScorerFromGoals(goals) {
-        if (!goals || goals.length === 0) return null;
-        const normal = goals.filter(g => !g.isOwnGoal && g.count > 0);
-        if (normal.length === 0) return null;
-        return normal.reduce((best, g) => g.count > best.count ? g : best);
-    },
-
-    /**
-     * Restituisce il capocannoniere di una partita (nuovo formato goals[] o fallback legacy topScorer).
-     * @returns {{ playerName, count }|null}
-     */
-    getMatchTopScorer(match) {
-        if (match.goals && match.goals.length > 0) {
-            const top = this.getTopScorerFromGoals(match.goals);
-            return top ? { playerName: top.playerName, count: top.count } : null;
-        }
-        // Fallback legacy
-        if (match.topScorer) {
-            return { playerName: match.topScorer, count: match.topScorerGoals || 0 };
-        }
-        return null;
-    },
-
-    /**
-     * Calcola il totale gol normali (non autogoal) di un giocatore in tutte le partite COMPLETED.
-     */
-    calculatePlayerGoals(playerId, matches) {
-        let total = 0;
-        matches.forEach(match => {
-            if (match.status !== 'COMPLETED' || !match.goals) return;
-            match.goals.forEach(g => {
-                if (g.playerId === playerId && !g.isOwnGoal) total += g.count;
-            });
-        });
-        return total;
-    },
-
-    /**
-     * Calcola il totale autogoal di un giocatore in tutte le partite COMPLETED.
-     */
-    calculatePlayerOwnGoals(playerId, matches) {
-        let total = 0;
-        matches.forEach(match => {
-            if (match.status !== 'COMPLETED' || !match.goals) return;
-            match.goals.forEach(g => {
-                if (g.playerId === playerId && g.isOwnGoal) total += g.count;
-            });
-        });
-        return total;
-    },
-
-    /**
-     * Calcola quante volte un giocatore è stato capocannoniere.
-     * Usa goals[] se disponibile, altrimenti fallback a topScorer legacy (per nome).
-     */
-    calculateTopScorerCount(playerId, playerName, matches) {
+    calculateTopScorerCount(playerName, matches) {
         let topScorerCount = 0;
 
         matches.forEach(match => {
-            if (match.status !== 'COMPLETED') return;
-
-            if (match.goals && match.goals.length > 0) {
-                const top = this.getTopScorerFromGoals(match.goals);
-                if (top && top.playerId === playerId) topScorerCount++;
-            } else if (match.topScorer === playerName) {
-                // Fallback legacy: confronto per nome
+            if (match.status === 'COMPLETED' && match.topScorer === playerName) {
                 topScorerCount++;
             }
         });

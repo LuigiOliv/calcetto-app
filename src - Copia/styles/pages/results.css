@@ -1,0 +1,416 @@
+/* ============================================================================
+   RESULTS VIEW - VISTA RISULTATI PARTITA COMPLETED
+   ============================================================================ */
+
+/* Responsive per schermi molto piccoli */
+@media (max-width: 360px) {
+    .team-name {
+        font-size: 0.75rem;
+    }
+
+    .team-score {
+        font-size: 1.5rem;
+    }
+
+    .score-divider {
+        font-size: 1.5rem;
+        padding: 0 0.25rem;
+    }
+}
+
+/* BASE MOBILE-FIRST */
+
+.results-card {
+    background: var(--bg-card);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.results-header {
+    background: linear-gradient(135deg, #1a202c, #0d1117);
+    padding: 20px;
+    text-align: center;
+    border-bottom: 2px solid var(--volt);
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.results-header .match-status.completed {
+    display: inline-block;
+    background: #48bb78;
+    color: white;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 0 auto;
+}
+
+.results-score {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin: 1.5rem 0;
+    flex-wrap: nowrap;
+}
+
+.results-team {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+    min-width: 80px;
+    /* Larghezza minima per evitare il wrap */
+}
+
+.results-team.gialli .team-name {
+    color: #FFD700;
+}
+
+.results-team.verdi .team-name {
+    color: #48bb78;
+}
+
+.results-team .team-name {
+    font-family: 'Teko', sans-serif;
+    font-size: 1.4rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: 600;
+}
+
+.results-team .team-score {
+    font-family: 'Teko', sans-serif;
+    font-size: 3rem;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--text-main);
+}
+
+.results-team .team-avg {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    opacity: 0.8;
+    white-space: nowrap;
+}
+
+.team-name {
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    white-space: nowrap;
+    /* Impedisce il wrap del testo */
+}
+
+.team-score {
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.score-divider {
+    font-family: 'Teko', sans-serif;
+    font-size: 2rem;
+    color: var(--text-muted);
+    opacity: 0.5;
+}
+
+.results-info {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: center;
+}
+
+.results-date {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.results-top-scorer {
+    background: rgba(255, 215, 0, 0.15);
+    border: 1px solid rgba(255, 215, 0, 0.3);
+    color: #FFD700;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.results-content {
+    padding: 20px;
+}
+
+/* MVP RANKING */
+.mvp-ranking {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 30px;
+}
+
+.mvp-item {
+    background: var(--bg-deep);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    padding: 12px 15px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: all 0.3s ease;
+}
+
+.mvp-item.mvp-rank-1 {
+    border-left: 4px solid #FFD700;
+    background: rgba(255, 215, 0, 0.05);
+}
+
+.mvp-item.mvp-rank-2 {
+    border-left: 4px solid #C0C0C0;
+    background: rgba(192, 192, 192, 0.05);
+}
+
+.mvp-item.mvp-rank-3 {
+    border-left: 4px solid #CD7F32;
+    background: rgba(205, 127, 50, 0.05);
+}
+
+.mvp-rank {
+    font-size: 1.2rem;
+    font-weight: 700;
+    min-width: 30px;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+.mvp-player-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+}
+
+.mvp-player-name {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-main);
+}
+
+.mvp-player-team {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    opacity: 0.8;
+}
+
+.mvp-stats {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 2px;
+    flex-shrink: 0;
+}
+
+.mvp-vote {
+    font-family: 'Teko', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--volt);
+}
+
+.mvp-vote-count {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    opacity: 0.7;
+}
+
+/* TABLET: â‰¥768px */
+@media (min-width: 768px) {
+    .results-header {
+        padding: 25px;
+        gap: 20px;
+    }
+
+    .results-header .match-status.completed {
+        padding: 8px 20px;
+        font-size: 0.9rem;
+    }
+
+    .results-score {
+        flex-direction: row;
+        justify-content: center;
+        gap: 30px;
+        margin: 20px 0;
+    }
+
+    .results-team {
+        min-width: 150px;
+        gap: 10px;
+    }
+
+    .results-team .team-name {
+        font-size: 1.6rem;
+    }
+
+    .results-team .team-score {
+        font-size: 3.5rem;
+    }
+
+    .results-team .team-avg {
+        font-size: 0.9rem;
+    }
+
+    .score-divider {
+        transform: none;
+        font-size: 2.5rem;
+    }
+
+    .results-date {
+        font-size: 0.9rem;
+    }
+
+    .results-top-scorer {
+        padding: 8px 20px;
+        font-size: 0.9rem;
+    }
+
+    .results-content {
+        padding: 25px;
+    }
+
+    .mvp-ranking {
+        gap: 12px;
+    }
+
+    .mvp-item {
+        padding: 15px 20px;
+        gap: 20px;
+    }
+
+    .mvp-item:hover {
+        background: var(--bg-hover);
+        border-color: var(--volt);
+        transform: translateY(-2px);
+    }
+
+    .mvp-rank {
+        font-size: 1.5rem;
+        min-width: 40px;
+    }
+
+    .mvp-player-name {
+        font-size: 1.1rem;
+    }
+
+    .mvp-player-team {
+        font-size: 0.85rem;
+    }
+
+    .mvp-vote {
+        font-size: 2rem;
+    }
+
+    .mvp-vote-count {
+        font-size: 0.75rem;
+    }
+}
+
+/* DESKTOP: â‰¥1024px */
+@media (min-width: 1024px) {
+    .results-header {
+        padding: 30px;
+    }
+
+    .results-team .team-name {
+        font-size: 1.8rem;
+    }
+
+    .results-team .team-score {
+        font-size: 4rem;
+    }
+
+    .score-divider {
+        font-size: 3rem;
+    }
+
+    .results-date {
+        font-size: 0.95rem;
+    }
+
+    .results-top-scorer {
+        font-size: 0.95rem;
+    }
+
+    .results-content {
+        padding: 30px;
+    }
+}
+
+/* ============================================================================
+LISTA ISCRITTI
+============================================================================ */
+
+.detail-content {
+    padding: 30px 20px;
+}
+
+@media (min-width: 768px) {
+    .detail-content {
+        padding: 40px 30px;
+    }
+}
+
+.players-list h3 {
+    color: white;
+    font-family: 'Teko', sans-serif;
+    font-size: 1.5rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 20px;
+}
+
+.player-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 4px;
+    margin-bottom: 10px;
+    border-left: 3px solid transparent;
+    transition: all 0.2s ease;
+}
+
+.player-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.player-item.gk {
+    border-left-color: var(--electric-blue);
+}
+
+.player-item .avatar {
+    width: 50px;
+    height: 50px;
+    font-size: 1.3rem;
+    flex-shrink: 0;
+}
+
+.player-name {
+    font-size: 0.95rem;
+    font-weight: bold;
+    color: white;
+    margin-bottom: 3px;
+}
+
+.player-role {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}

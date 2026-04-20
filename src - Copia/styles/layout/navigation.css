@@ -1,0 +1,120 @@
+/* Barra di navigazione mobile - bottom fixed */
+.nav-tabs {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    z-index: 999;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: stretch;
+    background: var(--bg-deep);
+    border-top: 2px solid var(--volt);
+    padding: 8px 0;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(10px);
+}
+
+
+
+
+.nav-tab {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    padding: 8px 4px;
+    min-height: 60px;
+    font-size: 0.75rem;
+    font-family: 'Teko', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    background: transparent;
+    color: var(--text-muted);
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.nav-tab:hover {
+    color: var(--volt);
+    background: rgba(210, 248, 0, 0.05);
+}
+
+.nav-tab.active {
+    color: black;
+    background: var(--volt);
+    font-weight: 500;
+}
+
+/* Reset effetti indesiderati 
+.nav-tab,
+.nav-tab:hover,
+.nav-tab.active {
+    box-shadow: none !important;
+    text-shadow: none !important;
+    filter: none !important;
+    -webkit-box-shadow: none !important;
+}*/
+
+/* Tablet: più spazio */
+@media (min-width: 768px) {
+    .nav-tabs {
+        padding: 10px 0;
+    }
+
+    .nav-tab {
+        font-size: 1rem;
+        padding: 10px 16px;
+        min-height: 70px;
+    }
+}
+
+/* Desktop: dimensioni originali */
+@media (min-width: 1024px) {
+    .nav-tab {
+        background: transparent;
+        color: var(--text-muted);
+        font-family: 'Teko', sans-serif;
+        border: none;
+        border-bottom: 3px solid transparent;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        cursor: pointer;
+        font-size: 1.2rem;
+        padding: 0;
+        min-height: 48px;
+        min-width: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        white-space: nowrap;
+    }
+
+    .nav-tab:hover {
+        color: var(--volt);
+    }
+
+    .nav-tab.active {
+        color: var(--volt);
+        border: none;
+        border-bottom: 3px solid var(--volt);
+        background: linear-gradient(to top, rgba(210, 248, 0, 0.05), transparent);
+    }
+
+    .nav-tabs {
+        display: flex;
+        justify-content: center;
+        background: var(--bg-card);
+        border: none;
+        /* Gap zero per massimizzare spazio tab */
+        padding: 8px 5px;
+        flex-wrap: wrap;
+        overflow-x: auto;
+    }
+}

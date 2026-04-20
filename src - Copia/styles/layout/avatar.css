@@ -1,0 +1,110 @@
+.avatar {
+    background: var(--bg-hover);
+    color: var(--volt);
+    border: 2px solid var(--volt);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    font-weight: bold;
+    font-family: 'Teko', sans-serif;
+    overflow: hidden;
+    flex-shrink: 0;
+
+    /* Mobile: dimensione aumentata per touch target migliore */
+    width: 50px;
+    height: 50px;
+    font-size: 1.4rem;
+}
+
+.avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Desktop: leggermente piÃ¹ piccolo (spazio abbondante) */
+@media (min-width: 1024px) {
+    .avatar {
+        width: 40px;
+        height: 40px;
+        font-size: 1.2rem;
+    }
+}
+
+/* Avatar grandi nei form e profili - Mobile optimized */
+.form-header .avatar,
+.profile-header .avatar {
+    width: 100px;
+    /* Mobile: grande e toccabile */
+    height: 100px;
+    font-size: 2.5rem;
+    border-width: 3px;
+}
+
+@media (min-width: 768px) {
+
+    .form-header .avatar,
+    .profile-header .avatar {
+        width: 80px;
+        height: 80px;
+        font-size: 2rem;
+    }
+}
+
+@media (min-width: 1024px) {
+    .form-header .avatar {
+        width: 80px;
+        height: 80px;
+    }
+
+    .player-info .avatar {
+        width: 180px;
+        height: 180px;
+        font-size: 3.5rem;
+    }
+}
+
+.avatar-small {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--bg-hover);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--volt);
+    border: 2px solid var(--volt);
+    font-weight: 600;
+    font-size: 12px;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.avatar-small img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.avatar-mini {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--bg-hover);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--volt);
+    border: 2px solid var(--volt);
+    font-weight: 600;
+    font-size: 12px;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.avatar-mini img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}

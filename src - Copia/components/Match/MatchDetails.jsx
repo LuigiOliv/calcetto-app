@@ -113,24 +113,11 @@ export function MatchResultsView({ match, users, onBack }) {
 
                     <div className="results-info">
                         <div className="results-date">{utils.formatMatchDateFull(match.date)}</div>
-                        {match.goals && match.goals.length > 0 ? (
-                            <div className="results-scorers">
-                                ⚽ Marcatori:
-                                {match.goals
-                                    .filter(g => g.count > 0)
-                                    .sort((a, b) => b.count - a.count)
-                                    .map((g, i) => (
-                                        <span key={i} style={{ marginLeft: '6px' }}>
-                                            {g.playerName} ({g.count}{g.isOwnGoal ? ' A.G.' : ''})
-                                            {i < match.goals.filter(g2 => g2.count > 0).length - 1 ? ',' : ''}
-                                        </span>
-                                    ))}
-                            </div>
-                        ) : match.topScorer ? (
+                        {match.topScorer && (
                             <div className="results-top-scorer">
                                 🏆 Capocannoniere: {match.topScorer} ({match.topScorerGoals} gol)
                             </div>
-                        ) : null}
+                        )}
                     </div>
                 </div>
 

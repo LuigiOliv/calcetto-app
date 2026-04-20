@@ -1,0 +1,115 @@
+/* ============================================================================
+   PROFILE - MOBILE FIRST
+   ============================================================================ */
+
+.section-container {
+    /* Mobile: full width */
+    min-width: 180px;
+    max-width: 300px;
+    margin: 0 auto;
+}
+
+.player-info {
+    gap: 20px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.name {
+}
+
+
+
+
+.overall-container {
+    text-align: center;
+    padding: 0;
+
+    /* Mobile: margin ottimizzato */
+    margin: 20px 0 30px 0;
+}
+
+.overall-main {
+    font-family: 'Teko', sans-serif;
+    color: var(--volt);
+    text-shadow: 0 0 20px rgba(210, 248, 0, 0.3);
+    line-height: 1;
+
+    /* Mobile: dimensione ridotta ma impattante */
+    font-size: 4rem;
+}
+
+.overall-label {
+    text-transform: uppercase;
+    color: #8892a6;
+    font-weight: 400;
+    margin: 8px;
+    /* Mobile: dimensione leggibile */
+    font-size: 0.85rem;
+    letter-spacing: 2.5px;
+}
+
+.votes-count {
+    color: #8892a6;
+    text-transform: uppercase;
+    font-weight: 300;
+    margin-bottom: 0;
+
+    /* Mobile: dimensione ottimizzata */
+    font-size: 0.7rem;
+    letter-spacing: 1px;
+}
+
+/* Tablet */
+@media (min-width: 768px) {
+    .section-container {
+        /* Mobile: full width */
+        max-width: none;
+        width: 100%;
+        margin: 0 auto;
+    }
+}
+
+/* Desktop: layout originale generoso */
+@media (min-width: 1024px) {
+    .section-container {
+        /* Mobile: full width */
+        width: 100%;
+        margin: 0 auto;
+    }
+
+    .player-profile {
+        display: flex;
+        align-items: flex-start;
+    }
+
+    .avatar.player-info {
+        width: 140px;
+        height: 140px;
+        font-size: 3.5rem;
+    }
+
+    .role-info {
+        max-width: fit-content;
+        margin-left: auto;
+    }
+
+
+    .player-info {
+        flex-direction: column;
+        flex: 0 0 auto;
+        align-items: flex-start;
+        gap: 20px;
+        max-width: fit-content;
+    }
+
+    .name {
+        margin-left: 20px;
+    }
+        .name h2{
+            font-size: 2.5rem;
+        }
+    .player-stats {
+        margin-top: -50px;
+    }
+}

@@ -1,0 +1,331 @@
+/* Admin Navigation Tabs */
+.admin-tabs-nav {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+}
+
+.admin-tab-btn {
+    background: transparent;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    color: var(--text-muted);
+    padding: 12px 20px;
+    border-radius: 4px;
+    font-family: 'Teko', sans-serif;
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    flex: 1;
+    min-width: 120px;
+}
+
+.admin-tab-btn:hover {
+    border-color: var(--volt);
+    color: var(--volt);
+}
+
+.admin-tab-btn.active {
+    background: var(--volt);
+    color: black;
+    border-color: var(--volt);
+    font-weight: 700;
+}
+
+/* Lista Partite Admin - Mobile */
+.admin-matches-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.admin-match-item {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-left: 4px solid var(--electric-blue);
+    box-shadow: -4px 0 15px rgba(0, 240, 255, 0.3);
+    /* ðŸ‘ˆ GLOW electric-blue */
+    border-radius: 4px;
+    padding: 20px;
+    transition: all 0.3s ease;
+    min-height: 180px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.admin-match-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-left-color: var(--volt);
+    box-shadow: -4px 0 20px rgba(210, 248, 0, 0.5), 0 4px 20px rgba(0, 0, 0, 0.3);
+    /* ðŸ‘ˆ GLOW volt + ombra */
+    transform: translateY(-2px);
+}
+
+.admin-match-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+}
+
+.admin-match-date {
+    font-family: 'Teko', sans-serif;
+    font-size: 1.6rem;
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 600;
+    text-shadow: 0 0 10px rgba(210, 248, 0, 0.3);
+}
+
+.admin-match-info {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 20px;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    padding-left: 5px;
+    border-left: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.admin-match-info>div {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* ============================================================================
+   SETTINGS / IMPOSTAZIONI - MOBILE FIRST
+   ============================================================================ */
+
+.settings-group {
+    background: var(--bg-card);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+
+    /* Mobile: padding ridotto */
+    padding: 20px 15px;
+    margin-bottom: 20px;
+}
+
+.settings-group h3 {
+    color: var(--volt);
+    font-family: 'Teko', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+
+    /* Mobile: dimensione ottimizzata */
+    margin-bottom: 15px;
+    font-size: 1.3rem;
+}
+
+.settings-info {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+
+    /* Mobile: gap ridotto */
+    gap: 20px;
+}
+
+.settings-avatar {
+    background: var(--bg-hover);
+    color: var(--volt);
+    border: 3px solid var(--volt);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    font-weight: bold;
+    font-family: 'Teko', sans-serif;
+    overflow: hidden;
+    flex-shrink: 0;
+
+    /* Mobile: dimensione generosa */
+    width: 90px;
+    height: 90px;
+    font-size: 35px;
+}
+
+.settings-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.settings-info-box {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+
+    /* Mobile: padding ridotto */
+    padding: 15px;
+}
+
+.settings-info-box .role-badge {
+    color: white;
+    font-family: 'Roboto', sans-serif;
+    display: inline;
+
+    /* Mobile: reset stili badge */
+    font-size: 1rem;
+    font-weight: 400;
+    text-transform: none;
+    letter-spacing: 0;
+    padding: 0;
+    background: transparent;
+    border-radius: 0;
+    border-left: none;
+}
+
+.settings-info-box strong {
+    color: var(--volt);
+}
+
+.settings-info-box div {
+    color: var(--text-main);
+
+    /* Mobile: spacing ottimizzato */
+    margin-bottom: 12px;
+}
+
+.settings-info-box div:last-child {
+    margin-bottom: 0;
+}
+
+/* Tablet */
+@media (min-width: 768px) {
+    .settings-group {
+        padding: 25px 20px;
+        margin-bottom: 25px;
+    }
+
+    .settings-group h3 {
+        font-size: 1.4rem;
+        margin-bottom: 18px;
+    }
+
+    .settings-info {
+        gap: 25px;
+    }
+
+    .settings-avatar {
+        width: 95px;
+        height: 95px;
+        font-size: 38px;
+    }
+
+    .settings-info-box {
+        padding: 18px;
+    }
+
+    .settings-info-box div {
+        margin-bottom: 14px;
+    }
+}
+
+/* Desktop */
+@media (min-width: 1024px) {
+    .settings-group {
+        padding: 30px;
+        margin-bottom: 30px;
+    }
+
+    .settings-group h3 {
+        font-size: 1.5rem;
+        margin-bottom: 20px;
+    }
+
+    .settings-info {
+        gap: 30px;
+    }
+
+    .settings-avatar {
+        width: 100px;
+        height: 100px;
+        font-size: 40px;
+    }
+
+    .settings-info-box {
+        padding: 20px;
+    }
+
+    .settings-info-box div {
+        margin-bottom: 15px;
+    }
+}
+
+/* ============================================================================
+   ADMIN - AREA PERICOLOSA
+   ============================================================================ */
+
+.admin-danger-zone {
+    background: rgba(245, 101, 101, 0.1) !important;
+    border-radius: 10px;
+    border: 2px solid var(--hot-red) !important;
+
+    /* Mobile: padding ridotto */
+    padding: 18px 15px;
+}
+
+.admin-danger-zone h3 {
+    color: var(--hot-red) !important;
+}
+
+.admin-danger-zone p {
+    color: var(--text-main) !important;
+    opacity: 0.8;
+    margin-bottom: 12px;
+}
+
+/* Desktop */
+@media (min-width: 1024px) {
+    .admin-danger-zone {
+        padding: 20px;
+    }
+
+    .admin-danger-zone p {
+        margin-bottom: 15px;
+    }
+}
+
+/* ============================================================================
+   ADMIN - LISTA GIOCATORI GLOBALE (Mobile First)
+   ============================================================================ */
+
+.admin-player-list {
+    background: var(--bg-card);
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid rgba(210, 248, 0, 0.1);
+}
+
+.admin-player-item {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    display: flex;
+    align-items: center;
+
+    /* Mobile: layout compatto */
+    padding: 12px 15px;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.admin-player-item:last-child {
+    border-bottom: none;
+}
+
+/* Desktop */
+@media (min-width: 1024px) {
+    .admin-player-item {
+        padding: 15px 20px;
+        gap: 15px;
+        flex-wrap: nowrap;
+    }
+}

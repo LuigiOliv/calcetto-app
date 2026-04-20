@@ -1,0 +1,32 @@
+:root {
+    /* Colori Background */
+    --bg-deep: #0B0E14;
+    --bg-card: #151B25;
+    --bg-hover: #1E2532;
+
+    /* Colori Accent */
+    --volt: #D2F800;
+    --electric-blue: #00F0FF;
+    --hot-red: #FF2E63;
+
+    /* Colori Testo */
+    --text-main: #FFFFFF;
+    --text-muted: #94A3B8;
+
+    /* Effetti */
+    --shadow-glow: 0 0 20px rgba(210, 248, 0, 0.15);
+    --shadow-strong: 0 0 30px rgba(0, 0, 0, 0.8);
+
+    /* BREAKPOINTS - Aggiunti per chiarezza */
+    --mobile-max: 767px;
+    --tablet-min: 768px;
+    --desktop-min: 1024px;
+    --desktop-large: 1400px;
+
+    /* COLORI per badge */
+    --gold: linear-gradient(135deg, #ffdc1b 0%, #ffac2d 50%, #c79200 100%);
+    --silver: linear-gradient(135deg, #e0e0e0 0%, #95a5a6 50%, #7f8c8d 100%);
+    --fire: linear-gradient(135deg, #ff5f6d 0%, #ffc371 100%);
+    --ice: linear-gradient(135deg, #00d2ff 0%, #3a7bd5 100%);
+    --dark-glass: rgba(0, 0, 0, 0.75);
+}

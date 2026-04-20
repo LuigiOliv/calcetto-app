@@ -27,7 +27,7 @@ function PlayerProfile({ player, votes = [], matches = [], matchVotes = [], isOw
         : utils.calculateOverall(averages);
     const playerMatches = utils.getPlayerMatchHistory(player.id, matches);
     const mvpCount = utils.calculateMVPCount(player.id, playerMatches, matchVotes);
-    const topScorerCount = utils.calculateTopScorerCount(player.id, player.name, playerMatches);
+    const topScorerCount = utils.calculateTopScorerCount(player.name, playerMatches);
     const cleanSheetCount = player.isGoalkeeper
         ? utils.calculateCleanSheets(player.id, player.name, playerMatches, CLEAN_SHEET_MAX_GOALS)
         : 0;
