@@ -79,8 +79,6 @@ export const CLASSIFICATION_FORMULA = {
     MIN_MATCHES_FOR_PERFORMANCE: 3,     // Minimo partite nella finestra per apparire in classifica Rendimento
 };
 
-// Add these new constant groups to your existing constants.js file:
-
 // ============================================
 // VOTING & RATING THRESHOLDS
 // ============================================
