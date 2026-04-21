@@ -738,7 +738,7 @@ function AdminPage({ users, setUsers, votes, setVotes, playersWithOverall }) {
         }
     };
 
-    const handleOpenScoreModal = (matchId) => {
+    const handleOpenScoreModal = async (matchId) => {
         const match = adminMatches.find(m => m.id === matchId);
 
         if (!match) {
