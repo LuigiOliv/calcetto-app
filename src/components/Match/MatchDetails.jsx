@@ -294,6 +294,14 @@ export function MatchVotingView({ match, currentUser, users, onBack }) {
     const [loading, setLoading] = useState(true);
     const [submitting, setSubmitting] = useState(false);
 
+    // --- pre-vote score report ---
+    const [hasReportedScore, setHasReportedScore] = useState(false);
+    const [reportStep, setReportStep] = useState(1); // 1=risultato, 2=gol
+    const [reportScoreGialli, setReportScoreGialli] = useState(0);
+    const [reportScoreVerdi, setReportScoreVerdi] = useState(0);
+    const [reportGoals, setReportGoals] = useState([]);
+    const [savingReport, setSavingReport] = useState(false);
+
     useEffect(() => {
         loadVotingData();
     }, [match.id]);
@@ -301,6 +309,10 @@ export function MatchVotingView({ match, currentUser, users, onBack }) {
     const loadVotingData = async () => {
         setLoading(true);
         try {
+            // Controlla se ho già inviato il report risultato
+            const myReport = await storage.getMyScoreReport(match.id, currentUser.id);
+            if (myReport) setHasReportedScore(true);
+
             // Controlla se ho già votato
             const myVote = await storage.getMyMatchVote(match.id, currentUser.id);
             if (myVote) {
@@ -321,6 +333,21 @@ export function MatchVotingView({ match, currentUser, users, onBack }) {
             console.error('Errore caricamento voti:', error);
         }
         setLoading(false);
+    };
+
+    const handleSubmitScoreReport = async (skipGoals = false) => {
+        setSavingReport(true);
+        try {
+            await storage.saveScoreReport(match.id, currentUser.id, {
+                scoreGialli: reportScoreGialli,
+                scoreVerdi: reportScoreVerdi,
+                goals: skipGoals ? [] : reportGoals.filter(g => g.playerId && g.count > 0)
+            });
+            setHasReportedScore(true);
+        } catch (error) {
+            console.error('Errore salvataggio report:', error);
+        }
+        setSavingReport(false);
     };
 
     // Determina il team dell'utente
@@ -422,6 +449,153 @@ export function MatchVotingView({ match, currentUser, users, onBack }) {
     const playersToVote = getPlayersToVote();
     const gialliToVote = playersToVote.filter(p => getPlayerTeam(p) === 'gialli');
     const verdiToVote = playersToVote.filter(p => getPlayerTeam(p) === 'verdi');
+    const allMatchPlayers = [...(match.teams.gialli || []), ...(match.teams.verdi || [])];
+
+    // --- Schermata pre-voto: inserimento risultato e gol ---
+    if (!hasReportedScore) {
+        return (
+            <div className="section-container">
+                <div className="section-header">
+                    <button className="btn-back" onClick={onBack}>← Indietro</button>
+                    <h2>{reportStep === 1 ? '⚽ Che risultato è stato?' : '⚽ Chi ha segnato?'}</h2>
+                </div>
+
+                {reportStep === 1 && (
+                    <div className="voting-card">
+                        <div style={{ textAlign: 'center', padding: '24px 16px' }}>
+                            <p style={{ color: 'var(--text-muted)', marginBottom: '28px', fontSize: '15px' }}>
+                                Inserisci il risultato come lo ricordi. Prima di votare vogliamo raccogliere qualche dato sulla partita.
+                            </p>
+
+                            <div style={{ display: 'flex', gap: '24px', alignItems: 'center', justifyContent: 'center', marginBottom: '36px' }}>
+                                <div style={{ textAlign: 'center' }}>
+                                    <div style={{ color: '#FFD700', fontWeight: 'bold', marginBottom: '12px', fontSize: '14px', letterSpacing: '1px' }}>🟡 GIALLI</div>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                                        <button
+                                            onClick={() => setReportScoreGialli(Math.max(0, reportScoreGialli - 1))}
+                                            style={{ width: '40px', height: '40px', borderRadius: '50%', border: '1px solid var(--border)', background: 'var(--bg-card)', color: 'white', fontSize: '20px', cursor: 'pointer', lineHeight: 1 }}
+                                        >-</button>
+                                        <span style={{ fontSize: '48px', fontWeight: 'bold', minWidth: '52px', textAlign: 'center' }}>{reportScoreGialli}</span>
+                                        <button
+                                            onClick={() => setReportScoreGialli(reportScoreGialli + 1)}
+                                            style={{ width: '40px', height: '40px', borderRadius: '50%', border: '1px solid var(--border)', background: 'var(--bg-card)', color: 'white', fontSize: '20px', cursor: 'pointer', lineHeight: 1 }}
+                                        >+</button>
+                                    </div>
+                                </div>
+
+                                <span style={{ fontSize: '36px', fontWeight: 'bold', color: 'var(--text-muted)', marginTop: '28px' }}>-</span>
+
+                                <div style={{ textAlign: 'center' }}>
+                                    <div style={{ color: '#48bb78', fontWeight: 'bold', marginBottom: '12px', fontSize: '14px', letterSpacing: '1px' }}>🟢 VERDI</div>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                                        <button
+                                            onClick={() => setReportScoreVerdi(Math.max(0, reportScoreVerdi - 1))}
+                                            style={{ width: '40px', height: '40px', borderRadius: '50%', border: '1px solid var(--border)', background: 'var(--bg-card)', color: 'white', fontSize: '20px', cursor: 'pointer', lineHeight: 1 }}
+                                        >-</button>
+                                        <span style={{ fontSize: '48px', fontWeight: 'bold', minWidth: '52px', textAlign: 'center' }}>{reportScoreVerdi}</span>
+                                        <button
+                                            onClick={() => setReportScoreVerdi(reportScoreVerdi + 1)}
+                                            style={{ width: '40px', height: '40px', borderRadius: '50%', border: '1px solid var(--border)', background: 'var(--bg-card)', color: 'white', fontSize: '20px', cursor: 'pointer', lineHeight: 1 }}
+                                        >+</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button
+                                className="btn btn-primary"
+                                style={{ width: '100%', maxWidth: '320px' }}
+                                onClick={() => setReportStep(2)}
+                            >
+                                Avanti →
+                            </button>
+                        </div>
+                    </div>
+                )}
+
+                {reportStep === 2 && (
+                    <div className="voting-card">
+                        <div style={{ padding: '20px 16px' }}>
+                            <p style={{ color: 'var(--text-muted)', marginBottom: '20px', fontSize: '14px' }}>
+                                Aggiungi i gol che ricordi. Non è obbligatorio inserirli tutti.
+                            </p>
+
+                            {reportGoals.map((goal, idx) => (
+                                <div key={idx} style={{ display: 'flex', gap: '8px', alignItems: 'center', marginBottom: '10px', flexWrap: 'wrap' }}>
+                                    <select
+                                        value={goal.playerId}
+                                        onChange={(e) => {
+                                            const player = allMatchPlayers.find(p => p.playerId === e.target.value);
+                                            const updated = [...reportGoals];
+                                            updated[idx] = { ...updated[idx], playerId: e.target.value, playerName: player?.playerName || '' };
+                                            setReportGoals(updated);
+                                        }}
+                                        style={{ flex: '1', minWidth: '140px', padding: '8px', background: 'var(--bg-deep)', color: 'white', border: '1px solid var(--border)', borderRadius: '6px' }}
+                                    >
+                                        <option value="">Seleziona giocatore</option>
+                                        {allMatchPlayers.map(p => (
+                                            <option key={p.playerId} value={p.playerId}>{p.playerName}</option>
+                                        ))}
+                                    </select>
+                                    <input
+                                        type="number" min="1" value={goal.count}
+                                        onChange={(e) => {
+                                            const updated = [...reportGoals];
+                                            updated[idx] = { ...updated[idx], count: parseInt(e.target.value) || 0 };
+                                            setReportGoals(updated);
+                                        }}
+                                        style={{ width: '60px', padding: '8px', textAlign: 'center', background: 'var(--bg-deep)', color: 'white', border: '1px solid var(--border)', borderRadius: '6px' }}
+                                        placeholder="Gol"
+                                    />
+                                    <label style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '12px', color: 'var(--text-muted)', cursor: 'pointer', whiteSpace: 'nowrap' }}>
+                                        <input
+                                            type="checkbox"
+                                            checked={goal.isOwnGoal || false}
+                                            onChange={(e) => {
+                                                const updated = [...reportGoals];
+                                                updated[idx] = { ...updated[idx], isOwnGoal: e.target.checked };
+                                                setReportGoals(updated);
+                                            }}
+                                        />
+                                        A.G.
+                                    </label>
+                                    <button
+                                        onClick={() => setReportGoals(reportGoals.filter((_, i) => i !== idx))}
+                                        style={{ background: 'none', border: 'none', color: '#e53e3e', cursor: 'pointer', fontSize: '18px', padding: '4px' }}
+                                    >✕</button>
+                                </div>
+                            ))}
+
+                            <button
+                                onClick={() => setReportGoals([...reportGoals, { playerId: '', playerName: '', count: 1, isOwnGoal: false }])}
+                                style={{ padding: '6px 14px', background: 'var(--bg-card)', border: '1px dashed var(--border)', color: 'var(--volt)', borderRadius: '6px', cursor: 'pointer', fontSize: '13px', marginBottom: '28px', display: 'block' }}
+                            >
+                                ➕ Aggiungi marcatore
+                            </button>
+
+                            <div style={{ display: 'flex', gap: '12px' }}>
+                                <button
+                                    className="btn btn-secondary"
+                                    style={{ flex: 1 }}
+                                    onClick={() => handleSubmitScoreReport(true)}
+                                    disabled={savingReport}
+                                >
+                                    Salta → Vai a votare
+                                </button>
+                                <button
+                                    className="btn btn-primary"
+                                    style={{ flex: 1 }}
+                                    onClick={() => handleSubmitScoreReport(false)}
+                                    disabled={savingReport}
+                                >
+                                    {savingReport ? 'Salvataggio...' : '✓ Conferma e vota'}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                )}
+            </div>
+        );
+    }
 
     return (
         <div className="section-container">

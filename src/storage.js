@@ -218,6 +218,34 @@ const storage = {
         });
     },
 
+    // ============================================================================
+    // FUNZIONI SCORE REPORTS (suggerimenti risultato/gol dai giocatori)
+    // ============================================================================
+
+    saveScoreReport: async (matchId, playerId, data) => {
+        await setDoc(doc(db, 'matches', matchId, 'score_reports', playerId), {
+            playerId,
+            scoreGialli: data.scoreGialli,
+            scoreVerdi: data.scoreVerdi,
+            goals: data.goals || [],
+            submittedAt: Date.now()
+        });
+    },
+
+    getMyScoreReport: async (matchId, playerId) => {
+        const docSnap = await getDoc(
+            doc(db, 'matches', matchId, 'score_reports', playerId)
+        );
+        return docSnap.exists() ? { id: docSnap.id, ...docSnap.data() } : null;
+    },
+
+    getScoreReports: async (matchId) => {
+        const snapshot = await getDocs(
+            collection(db, 'matches', matchId, 'score_reports')
+        );
+        return snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+    },
+
     checkAndUpdateMatchStatus: async (match) => {
         if (!match) return match;
 

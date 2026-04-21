@@ -212,6 +212,8 @@ function AdminPage({ users, setUsers, votes, setVotes, playersWithOverall }) {
     const [scoreGialli, setScoreGialli] = useState('');
     const [scoreVerdi, setScoreVerdi] = useState('');
     const [matchGoals, setMatchGoals] = useState([]); // [{ playerId, playerName, count, isOwnGoal }]
+    const [scoreReports, setScoreReports] = useState([]); // suggerimenti giocatori
+    const [showReportsSummary, setShowReportsSummary] = useState(false);
 
     // STATI PER MODIFICA MAX PLAYERS
     const [editingMaxPlayers, setEditingMaxPlayers] = useState(null);
@@ -772,6 +774,15 @@ function AdminPage({ users, setUsers, votes, setVotes, playersWithOverall }) {
             console.log('ℹ️ Nessun goal da caricare');
             setMatchGoals([]);
         }
+
+        // Carica suggerimenti giocatori
+        try {
+            const reports = await storage.getScoreReports(matchId);
+            setScoreReports(reports);
+        } catch (e) {
+            setScoreReports([]);
+        }
+        setShowReportsSummary(false);
 
         console.log('✅ Apro modal risultato');
         setShowScoreModal(true);
@@ -1905,6 +1916,8 @@ function AdminPage({ users, setUsers, votes, setVotes, playersWithOverall }) {
                                     setScoreGialli('');
                                     setScoreVerdi('');
                                     setMatchGoals([]);
+                                    setScoreReports([]);
+                                    setShowReportsSummary(false);
                                 }}>
                                     Annulla
                                 </button>
@@ -1912,6 +1925,76 @@ function AdminPage({ users, setUsers, votes, setVotes, playersWithOverall }) {
                                     ✓ Salva Risultato
                                 </button>
                             </div>
+
+                            {/* RIEPILOGO SUGGERIMENTI GIOCATORI */}
+                            {scoreReports.length > 0 && (
+                                <div style={{ marginTop: '24px', borderTop: '1px solid var(--border)', paddingTop: '16px' }}>
+                                    <button
+                                        onClick={() => setShowReportsSummary(!showReportsSummary)}
+                                        style={{ background: 'none', border: 'none', color: 'var(--volt)', cursor: 'pointer', fontSize: '14px', padding: 0, display: 'flex', alignItems: 'center', gap: '6px' }}
+                                    >
+                                        {showReportsSummary ? '▾' : '▸'} 📊 Cosa dicono i giocatori ({scoreReports.length})
+                                    </button>
+
+                                    {showReportsSummary && (() => {
+                                        // Aggrega risultati
+                                        const scoreCounts = {};
+                                        scoreReports.forEach(r => {
+                                            const key = `${r.scoreGialli}-${r.scoreVerdi}`;
+                                            scoreCounts[key] = (scoreCounts[key] || 0) + 1;
+                                        });
+                                        const sortedScores = Object.entries(scoreCounts).sort((a, b) => b[1] - a[1]);
+
+                                        // Aggrega gol suggeriti
+                                        const goalSuggestions = {};
+                                        scoreReports.forEach(r => {
+                                            (r.goals || []).forEach(g => {
+                                                if (!g.playerId) return;
+                                                const key = g.playerId;
+                                                if (!goalSuggestions[key]) goalSuggestions[key] = { playerName: g.playerName, normalGoals: 0, ownGoals: 0 };
+                                                if (g.isOwnGoal) goalSuggestions[key].ownGoals += g.count;
+                                                else goalSuggestions[key].normalGoals += g.count;
+                                            });
+                                        });
+                                        const sortedGoals = Object.values(goalSuggestions).sort((a, b) => b.normalGoals - a.normalGoals);
+
+                                        return (
+                                            <div style={{ marginTop: '12px', fontSize: '13px' }}>
+                                                <div style={{ marginBottom: '12px' }}>
+                                                    <strong style={{ color: 'var(--text-muted)' }}>Risultati indicati:</strong>
+                                                    {sortedScores.map(([score, count]) => (
+                                                        <div key={score} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '6px 10px', marginTop: '6px', background: 'var(--bg-card)', borderRadius: '6px' }}>
+                                                            <span style={{ fontWeight: 'bold' }}>{score.replace('-', ' - ')} (Gialli - Verdi)</span>
+                                                            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                                                <span style={{ color: 'var(--text-muted)' }}>{count} {count === 1 ? 'giocatore' : 'giocatori'}</span>
+                                                                <button
+                                                                    onClick={() => { const [g, v] = score.split('-'); setScoreGialli(g); setScoreVerdi(v); }}
+                                                                    style={{ padding: '3px 8px', fontSize: '11px', background: 'var(--volt)', color: 'black', border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}
+                                                                >Usa</button>
+                                                            </div>
+                                                        </div>
+                                                    ))}
+                                                </div>
+
+                                                {sortedGoals.length > 0 && (
+                                                    <div>
+                                                        <strong style={{ color: 'var(--text-muted)' }}>Gol suggeriti (somma):</strong>
+                                                        {sortedGoals.map(g => (
+                                                            <div key={g.playerName} style={{ display: 'flex', justifyContent: 'space-between', padding: '5px 10px', marginTop: '5px', background: 'var(--bg-card)', borderRadius: '6px' }}>
+                                                                <span>{g.playerName}</span>
+                                                                <span style={{ color: 'var(--volt)' }}>
+                                                                    {g.normalGoals > 0 && `⚽ ${g.normalGoals}`}
+                                                                    {g.ownGoals > 0 && ` 🔄 ${g.ownGoals} A.G.`}
+                                                                </span>
+                                                            </div>
+                                                        ))}
+                                                    </div>
+                                                )}
+                                            </div>
+                                        );
+                                    })()}
+                                </div>
+                            )}
                         </div>
                     </div>
                 )
