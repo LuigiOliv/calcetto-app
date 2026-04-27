@@ -840,6 +840,18 @@ function AdminPage({ users, setUsers, votes, setVotes, playersWithOverall }) {
         }
     };
 
+    const handleOpenVoting = async (matchId) => {
+        const match = adminMatches.find(m => m.id === matchId);
+        if (!match?.teams?.gialli?.length) {
+            alert('Devi prima assegnare le squadre!');
+            return;
+        }
+        if (!window.confirm('Aprire le votazioni? I giocatori potranno segnalare il risultato e votare.')) return;
+        await storage.updateMatch(matchId, { status: 'VOTING' });
+        showSuccessMsg('Votazioni aperte!');
+        await loadAdminMatches();
+    };
+
     const showSuccessMsg = (msg) => {
         setSuccessMessage(msg);
         setShowSuccess(true);
@@ -1195,6 +1207,12 @@ function AdminPage({ users, setUsers, votes, setVotes, playersWithOverall }) {
                                                     >
                                                         ⚽ Inserisci Risultato
                                                     </button>
+                                                    <button
+                                                        className="admin-action-btn success"
+                                                        onClick={() => handleOpenVoting(match.id)}
+                                                    >
+                                                        ▶️ Apri Votazioni
+                                                    </button>
                                                 </>
                                             )}
                                             {match.status === 'VOTING' && (
@@ -1214,12 +1232,20 @@ function AdminPage({ users, setUsers, votes, setVotes, playersWithOverall }) {
                                                 </>
                                             )}
                                             {match.status === 'COMPLETED' && (
-                                                <button
-                                                    className="admin-action-btn reopen"
-                                                    onClick={() => handleReopenRegistrations(match.id)}
-                                                >
-                                                    🔙 Riapri Partita
-                                                </button>
+                                                <>
+                                                    <button
+                                                        className="admin-action-btn score"
+                                                        onClick={() => handleOpenScoreModal(match.id)}
+                                                    >
+                                                        ✏️ Modifica Risultato
+                                                    </button>
+                                                    <button
+                                                        className="admin-action-btn reopen"
+                                                        onClick={() => handleReopenRegistrations(match.id)}
+                                                    >
+                                                        🔙 Riapri Partita
+                                                    </button>
+                                                </>
                                             )}
                                             {/* ✅ NUOVO: Bottone Annulla per partite OPEN o CLOSED */}
                                             {(match.status === 'OPEN' || match.status === 'CLOSED') && (

@@ -280,7 +280,7 @@ const storage = {
             }
         }
 
-        // CLOSED → VOTING: 2 ore dopo la partita (solo se ci sono squadre E risultato)
+        // CLOSED → VOTING: 2 ore dopo la partita (basta che ci siano le squadre; il risultato si inserisce dopo)
         if (match.status === 'CLOSED') {
             const votingOpenTime = new Date(matchDate.getTime() + DEADLINES.VOTING_OPENS_AFTER_HOURS * 60 * 60 * 1000);
             const hasTeams = match.teams &&
@@ -288,11 +288,8 @@ const storage = {
                 match.teams.gialli.length > 0 &&
                 match.teams.verdi &&
                 match.teams.verdi.length > 0;
-            const hasScore = match.score &&
-                match.score.gialli !== null &&
-                match.score.verdi !== null;
 
-            if (now >= votingOpenTime && hasTeams && hasScore) {
+            if (now >= votingOpenTime && hasTeams) {
                 newStatus = 'VOTING';
                 needsUpdate = true;
             }

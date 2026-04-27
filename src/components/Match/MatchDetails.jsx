@@ -603,11 +603,17 @@ export function MatchVotingView({ match, currentUser, users, onBack }) {
                 <div className="voting-header">
                     <span className="match-status voting">⭐ DA VOTARE</span>
 
-                    <div className="voting-score">
-                        <span className="team-name gialli">GIALLI</span>
-                        <span className="score">{match.score.gialli} - {match.score.verdi}</span>
-                        <span className="team-name verdi">VERDI</span>
-                    </div>
+                    {match.score ? (
+                        <div className="voting-score">
+                            <span className="team-name gialli">GIALLI</span>
+                            <span className="score">{match.score.gialli} - {match.score.verdi}</span>
+                            <span className="team-name verdi">VERDI</span>
+                        </div>
+                    ) : (
+                        <div style={{ textAlign: 'center', padding: '12px 16px', background: 'rgba(255,193,7,0.1)', border: '1px solid rgba(255,193,7,0.4)', borderRadius: '8px', margin: '8px 0', color: '#FFC107', fontSize: '14px' }}>
+                            ⏳ Risultato ufficiale non ancora inserito dall'admin — puoi già votare!
+                        </div>
+                    )}
 
                     <div className="voting-info">
                         <div className="voting-date">{utils.formatMatchDateFull(match.date)}</div>
