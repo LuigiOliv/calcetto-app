@@ -1945,22 +1945,33 @@ function AdminPage({ users, setUsers, votes, setVotes, playersWithOverall }) {
                                         });
                                         const sortedScores = Object.entries(scoreCounts).sort((a, b) => b[1] - a[1]);
 
-                                        // Aggrega gol suggeriti
-                                        const goalSuggestions = {};
+                                        // Aggrega gol: MEDIA per giocatore (non somma)
+                                        const goalMap = {};
                                         scoreReports.forEach(r => {
                                             (r.goals || []).forEach(g => {
-                                                if (!g.playerId) return;
-                                                const key = g.playerId;
-                                                if (!goalSuggestions[key]) goalSuggestions[key] = { playerName: g.playerName, normalGoals: 0, ownGoals: 0 };
-                                                if (g.isOwnGoal) goalSuggestions[key].ownGoals += g.count;
-                                                else goalSuggestions[key].normalGoals += g.count;
+                                                if (!g.playerId || !g.count) return;
+                                                const key = `${g.playerId}-${g.isOwnGoal ? 'ag' : 'n'}`;
+                                                if (!goalMap[key]) goalMap[key] = { playerId: g.playerId, playerName: g.playerName, isOwnGoal: g.isOwnGoal || false, totalGoals: 0, mentions: 0 };
+                                                goalMap[key].totalGoals += g.count;
+                                                goalMap[key].mentions += 1;
                                             });
                                         });
-                                        const sortedGoals = Object.values(goalSuggestions).sort((a, b) => b.normalGoals - a.normalGoals);
+                                        const sortedGoals = Object.values(goalMap)
+                                            .map(e => ({ ...e, avgGoals: Math.max(1, Math.round(e.totalGoals / e.mentions)) }))
+                                            .sort((a, b) => b.avgGoals - a.avgGoals);
+
+                                        const handleImportGoals = () => {
+                                            setMatchGoals(sortedGoals.map(e => ({
+                                                playerId: e.playerId,
+                                                playerName: e.playerName,
+                                                count: e.avgGoals,
+                                                isOwnGoal: e.isOwnGoal
+                                            })));
+                                        };
 
                                         return (
                                             <div style={{ marginTop: '12px', fontSize: '13px' }}>
-                                                <div style={{ marginBottom: '12px' }}>
+                                                <div style={{ marginBottom: '16px' }}>
                                                     <strong style={{ color: 'var(--text-muted)' }}>Risultati indicati:</strong>
                                                     {sortedScores.map(([score, count]) => (
                                                         <div key={score} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '6px 10px', marginTop: '6px', background: 'var(--bg-card)', borderRadius: '6px' }}>
@@ -1978,16 +1989,25 @@ function AdminPage({ users, setUsers, votes, setVotes, playersWithOverall }) {
 
                                                 {sortedGoals.length > 0 && (
                                                     <div>
-                                                        <strong style={{ color: 'var(--text-muted)' }}>Gol suggeriti (somma):</strong>
+                                                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                                                            <strong style={{ color: 'var(--text-muted)' }}>Gol suggeriti (media):</strong>
+                                                            <button
+                                                                onClick={handleImportGoals}
+                                                                style={{ padding: '4px 10px', fontSize: '12px', background: 'var(--volt)', color: 'black', border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}
+                                                            >📥 Importa gol</button>
+                                                        </div>
                                                         {sortedGoals.map(g => (
-                                                            <div key={g.playerName} style={{ display: 'flex', justifyContent: 'space-between', padding: '5px 10px', marginTop: '5px', background: 'var(--bg-card)', borderRadius: '6px' }}>
-                                                                <span>{g.playerName}</span>
+                                                            <div key={`${g.playerId}-${g.isOwnGoal}`} style={{ display: 'flex', justifyContent: 'space-between', padding: '5px 10px', marginTop: '5px', background: 'var(--bg-card)', borderRadius: '6px' }}>
+                                                                <span>{g.playerName}{g.isOwnGoal ? ' (A.G.)' : ''}</span>
                                                                 <span style={{ color: 'var(--volt)' }}>
-                                                                    {g.normalGoals > 0 && `⚽ ${g.normalGoals}`}
-                                                                    {g.ownGoals > 0 && ` 🔄 ${g.ownGoals} A.G.`}
+                                                                    {g.isOwnGoal ? '🔄' : '⚽'} {g.avgGoals} gol
+                                                                    <span style={{ color: 'var(--text-muted)', marginLeft: '6px', fontSize: '11px' }}>({g.mentions}/{scoreReports.length} cit.)</span>
                                                                 </span>
                                                             </div>
                                                         ))}
+                                                        <p style={{ color: 'var(--text-muted)', fontSize: '11px', marginTop: '8px' }}>
+                                                            "Importa gol" sovrascrive i gol nel form sopra. Puoi modificarli prima di salvare.
+                                                        </p>
                                                     </div>
                                                 )}
                                             </div>
