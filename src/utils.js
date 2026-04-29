@@ -487,7 +487,75 @@ const utils = {
         });
 
         return cleanSheetCount;
+    },
+
+    /**
+     * Calcola vittorie/pareggi/sconfitte di un giocatore.
+     * @param {string} playerId
+     * @param {Array} matches - Partite già filtrate al giocatore (COMPLETED)
+     */
+    calculateWDL(playerId, matches) {
+        let wins = 0, draws = 0, losses = 0;
+        matches.forEach(match => {
+            if (!match.score) return;
+            let playerTeam = null;
+            if (match.teams?.gialli?.some(p => p.playerId === playerId)) playerTeam = 'gialli';
+            else if (match.teams?.verdi?.some(p => p.playerId === playerId)) playerTeam = 'verdi';
+            if (!playerTeam) return;
+            const myScore = match.score[playerTeam];
+            const theirScore = match.score[playerTeam === 'gialli' ? 'verdi' : 'gialli'];
+            if (myScore > theirScore) wins++;
+            else if (myScore === theirScore) draws++;
+            else losses++;
+        });
+        return { wins, draws, losses, total: wins + draws + losses };
+    },
+
+    /**
+     * Restituisce le ultime N risultati del giocatore come array di stringhe 'V'/'P'/'S'.
+     * L'array è ordinato dalla partita più vecchia alla più recente (sinistra→destra).
+     * @param {string} playerId
+     * @param {Array} matches - Partite già filtrate al giocatore, ordinate per data desc
+     * @param {number} n - Numero massimo di risultati (default 5)
+     */
+    getFormStreak(playerId, matches, n = 5) {
+        const results = [];
+        for (const match of matches) {
+            if (results.length >= n) break;
+            if (!match.score) continue;
+            let playerTeam = null;
+            if (match.teams?.gialli?.some(p => p.playerId === playerId)) playerTeam = 'gialli';
+            else if (match.teams?.verdi?.some(p => p.playerId === playerId)) playerTeam = 'verdi';
+            if (!playerTeam) continue;
+            const myScore = match.score[playerTeam];
+            const theirScore = match.score[playerTeam === 'gialli' ? 'verdi' : 'gialli'];
+            if (myScore > theirScore) results.push('V');
+            else if (myScore === theirScore) results.push('P');
+            else results.push('S');
+        }
+        return results.reverse(); // oldest → newest for display
+    },
+
+    /**
+     * Restituisce lo storico delle medie voti ricevuti dal giocatore partita per partita.
+     * Ordinato dal più vecchio al più recente (per sparkline left→right).
+     * @param {string} playerId
+     * @param {Array} matches - Partite già filtrate al giocatore, ordinate per data desc
+     * @param {Array} matchVotes - Tutti i voti partita
+     * @param {number} n - Massimo partite da includere (default 8)
+     * @returns {Array<{date: string, avg: number}>}
+     */
+    getMatchVoteHistory(playerId, matches, matchVotes, n = 8) {
+        const history = [];
+        for (const match of matches) {
+            if (history.length >= n) break;
+            const votes = matchVotes
+                .filter(mv => mv.matchId === match.id)
+                .flatMap(mv => mv.votes?.[playerId] !== undefined ? [mv.votes[playerId]] : []);
+            if (votes.length === 0) continue;
+            const avg = votes.reduce((a, b) => a + b, 0) / votes.length;
+            history.push({ date: match.date, avg });
+        }
+        return history.reverse(); // oldest → newest for chart
     }
 };
-
-export default utils;
